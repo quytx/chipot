@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
+  include ApplicationHelper
   before_save { self.email = email.downcase }
+  before_save { self.phone = reformat(self.phone) }
   VALID_EMAIL_REGEX = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
   VALID_PHONE_REGEX = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
   validates :first_name, presence: true
@@ -13,5 +15,4 @@ class User < ActiveRecord::Base
 
   has_secure_password
   validates :password, length: { minimum: 6 }
-
 end
