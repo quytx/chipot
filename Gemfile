@@ -32,9 +32,17 @@ gem "mini_magick"
 gem 'jquery-ui-rails'
 gem 'angularjs-rails'
 
+
+#City of Chicago API
+gem 'soda-ruby'
+
 # photo
 gem 'carrierwave'
 gem 'fog'
+
+group :development, :test do
+  gem 'rspec-rails'
+end
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -47,4 +55,3 @@ gem 'fog'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-
