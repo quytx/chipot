@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Chipot</title>
+  <title>Chicago Pot Holes</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    
 </head>
 <body>
-
-<%= yield %>
-
+    <div class="metro">
+        <%= render 'partials/nav' %>
+        
+        <%= yield %>
+        
+    </div>    
 </body>
 </html>
