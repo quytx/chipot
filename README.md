@@ -1,4 +1,16 @@
-chipot
-======
+Project Name
+===============
 
-Chicago Potholes
+Dependencies
+---------------
+
+Project Overview
+---------------
+
+Functionality/Features
+---------------
+
+
+Credits
+---------------
+Ismail Kalimi, Max Diener, Timothy Howard, & Quy Tran
