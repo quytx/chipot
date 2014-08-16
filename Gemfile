@@ -32,6 +32,10 @@ gem "mini_magick"
 gem 'jquery-ui-rails'
 gem 'angularjs-rails'
 
+
+#City of Chicago API
+gem 'soda-ruby'
+
 # photo
 gem 'carrierwave'
 gem 'fog'
@@ -51,4 +55,3 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-
