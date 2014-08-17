@@ -134,10 +134,11 @@ $(function() {
                     filled_markers.push(marker);
                 }
             }
-            angular.element(document.getElementById('chart')).scope().$apply(function(scope) {
-                scope.options.axes.labelFunction = function(value) {
-                    return dates[value]
-                };
+
+            angular.element(document.getElementById('chart')).scope().$apply(function(scope){
+                scope.dates = dates.map(function(date){
+                    return date.substring(5, 10);
+                });
                 scope.options.axes.y.max = Math.max(yMax, y2Max);
                 scope.options.axes.y2.max = Math.max(yMax, y2Max);
                 scope.data = chartData;
