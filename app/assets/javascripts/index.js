@@ -10,9 +10,9 @@ $(function() {
 
     
     var chartData;
-    var dates = ["2014-08-10", "2014-08-11", "2014-08-12", "2014-08-13", "2014-08-14", "2014-08-15"];        
+    var dates;        
 
-    convertToX = function(date) {
+    convertToX = function(date, dates) {
         return dates.indexOf(date);
     }
 
@@ -23,9 +23,9 @@ $(function() {
         }
     }
 
-    insertData = function(hole, data) {
-        completeX = convertToX(hole.completion_date);
-        createdX = convertToX(hole.creation_date);
+    insertData = function(hole, data, dates) {
+        completeX = convertToX(hole.completion_date, dates);
+        createdX = convertToX(hole.creation_date, dates);
         var numComplete = 0;
         var numCreate = 0;
         if (completeX > -1 && completeX < dates.length) {
@@ -60,7 +60,6 @@ $(function() {
         var latlng = new google.maps.LatLng(lat, lng);
         geocoder.geocode({'latLng': latlng}, function(results, status) {
             var address = String("'"+results[0].formatted_address+"'");
-            console.log(address);
             var dropDownForm = "<form id='reportSubmit'>\
                                     <input type='hidden' name='latitude' value=" + lat + ">\
                                     <input type='hidden' name='longitude' value=" + lng + ">\
@@ -89,14 +88,32 @@ $(function() {
             
     })
 
-    $.ajax({
+    getDatesBetween = function(startDate, endDate) {
+        var start = new Date(startDate);
+        var end = new Date(endDate);
+        var between = [];
+        while (start <= end) {
+            start.setDate(start.getDate() + 1);
+            between.push(new Date(start));
+        }
+
+        return between.map(function(date){ 
+            return date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
+        });
+    }
+
+    getPotholesByDate = function(startDate, endDate) {
+        var dates = getDatesBetween(startDate, endDate);
+
+        $.ajax({
         url: "/potholes.json",
+        data: {all_dates: dates},
         success: function(data) {
             resetChart(dates.length);
-            var yMax = 0; 
+            var yMax = 0;
             var y2Max = 0;
             for (var i = 0; i < data.length; i++) {
-                var counts = insertData(data[i], chartData);
+                var counts = insertData(data[i], chartData, dates);
                 yMax = Math.max(yMax, counts[0]);
                 y2Max = Math.max(y2Max, counts[1]);
                 if (data[i].completion_date === null) {
@@ -130,12 +147,60 @@ $(function() {
         },
         dataType: "json"
     });
+    }
+
+    // $.ajax({
+    //     url: "/potholes.json",
+    //     success: function(data) {
+    //         resetChart(dates.length);
+    //         var yMax = 0; 
+    //         var y2Max = 0;
+    //         for (var i = 0; i < data.length; i++) {
+    //             var counts = insertData(data[i], chartData);
+    //             yMax = Math.max(yMax, counts[0]);
+    //             y2Max = Math.max(y2Max, counts[1]);
+    //             if (data[i].completion_date === null) {
+    //                 marker = new google.maps.Marker({
+    //                     position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
+    //                     map: map,
+    //                     icon: '/assets/red_MarkerA.png',
+    //                     optimized: false
+    //                 });
+    //                 makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Street Address: " + data[i].street_address, marker);
+    //                 unfilled_markers.push(marker);
+    //             } else {
+    //                 marker = new google.maps.Marker({
+    //                     position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
+    //                     map: map,
+    //                     icon: '/assets/green_MarkerA.png',
+    //                     optimized: false
+    //                 });
+    //                 makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Completed Date: " + data[i].completion_date + "<br>" + "Street Address: " + data[i].street_address, marker);
+    //                 filled_markers.push(marker);
+    //             }
+    //         }
+    //         angular.element(document.getElementById('chart')).scope().$apply(function(scope){
+    //             scope.dates = dates.map(function(date){
+    //                 return date.substring(5, 10);
+    //             });
+    //             scope.options.axes.y.max = Math.max(yMax, y2Max);
+    //             scope.options.axes.y2.max = Math.max(yMax, y2Max);
+    //             scope.data = chartData;
+    //         });
+    //     },
+    //     dataType: "json"
+    // });
 
     $(document).ajaxSuccess(function() {});
 
     google.maps.event.addListener(map, 'click', function(event) {
         infowindow.close();
         makeReportEvent(map, infowindow, event);
+    });
+
+    $("#date-pick").on('submit', function(event){
+        event.preventDefault();
+        getPotholesByDate($('#start-date').val(), $('#end-date').val());
     });
 
 
@@ -176,5 +241,6 @@ $(function() {
     };
 
     $("#pac-input").bind("keypress", {}, search);
+
 
 });
