@@ -59,11 +59,35 @@ $(function() {
         var lng = parseFloat(event.latLng.lng());
         var latlng = new google.maps.LatLng(lat, lng);
         geocoder.geocode({'latLng': latlng}, function(results, status) {
-            infowindow.setContent(results[0].formatted_address);
+            var address = String("'"+results[0].formatted_address+"'");
+            console.log(address);
+            var dropDownForm = "<form id='reportSubmit'>\
+                                    <input type='hidden' name='latitude' value=" + lat + ">\
+                                    <input type='hidden' name='longitude' value=" + lng + ">\
+                                    <input type='hidden' name='address' value=" + address + ">\
+                                    <select name='attribute'>\
+                                      <option value='CURB'>Curb Lane</option>\
+                                      <option value='CROSS'>Crosswalk</option>\
+                                      <option value='INTERSEC'>Intersection</option>\
+                                      <option value='TRAFFIC'>Traffic Lane</option>\
+                                    </select><br>\
+                                    <input type='submit' value='Submit'>\
+                                </form>"
+            infowindow.setContent("Submit a pothole report!" + dropDownForm);
             infowindow.setPosition(event.latLng);
             infowindow.open(map);
         });
     };
+
+    $('#map-canvas').on('submit', '#reportSubmit', function(event) {
+        event.preventDefault();
+        var form = $(this).serializeArray();
+
+        $.post("/submitReport", form, function(response){
+            console.log(response);
+        })
+            
+    })
 
     $.ajax({
         url: "/potholes.json",
