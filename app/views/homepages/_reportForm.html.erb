@@ -1,0 +1,7 @@
+<%= form_tag do %>
+  <%=  %>
+  <%= select_tag "Location of PotHole", options_for_select([['Curb Lane', 'CURB'],['Crosswalk', 'CROSS'],['Intersection', 'INTERSEC'],['Traffic Lane', 'TRAFFIC']]),{:prompt=>" ", :required => true } %>
+  <div class="actions">
+    <%= submit_tag %>
+  </div>
+<% end %>
