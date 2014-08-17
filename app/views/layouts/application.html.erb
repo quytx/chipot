@@ -4,9 +4,7 @@
   <title>Chicago Pot Holes</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-   <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=#{ENV['GMAP']}">
-  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
   <%= stylesheet_link_tag    'gmap', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'gmap', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'marker', 'data-turbolinks-track' => true %>

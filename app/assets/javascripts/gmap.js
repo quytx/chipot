@@ -1,6 +1,10 @@
 function initialize(mapOptions) {
     map = new google.maps.Map(document.getElementById("map-canvas"),
         mapOptions);
+
+    var input = document.getElementById('pac-input');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    
     return map;
 }
 
