@@ -8,10 +8,17 @@ body {
     padding: 0 
 }
 
-.metro #map-canvas { 
-    position: fixed;
-    border: groove; 
+.metro #map-section { 
     height: 500px;
+    width: 600px;
+    float: right;
+    margin-right: 30px;
+}
+
+.metro #map-canvas {
+  height: 100%;
+  width: 100%;
+  border: groove;
 }
 
 #map-canvas img {

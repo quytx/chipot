@@ -8,6 +8,36 @@ $(function() {
         zoom: 12
     };
 
+    
+    var chartData;
+    var dates = ["2014-08-10", "2014-08-11", "2014-08-12", "2014-08-13", "2014-08-14", "2014-08-15"];        
+    
+    convertToX = function(date) {
+        return dates.indexOf(date);
+    }
+
+    resetChart = function(numDates) {
+        chartData = [];
+        for (var i = 0; i < numDates; i++) {
+            chartData.push({ x: i, report: 0, patch: 0 });
+        }
+    }
+
+    insertData = function(hole, data) {
+        completeX = convertToX(hole.completion_date);
+        createdX = convertToX(hole.creation_date);
+        var numComplete = 0;
+        var numCreate = 0;
+        if (completeX > -1 && completeX < dates.length) {
+            numComplete = ++data[completeX].patch;
+        } 
+        if (createdX > -1 && createdX < dates.length) {
+            numCreate = ++data[createdX].report;
+        }
+        return [numCreate, numComplete]; 
+    }
+
+
     var map = initialize(mapOptions);
 
     // Search
@@ -62,7 +92,13 @@ $(function() {
     $.ajax({
         url: "/potholes.json",
         success: function(data) {
+            resetChart(dates.length);
+            var yMax = 0; 
+            var y2Max = 0;
             for (var i = 0; i < data.length; i++) {
+                var counts = insertData(data[i], chartData);
+                yMax = Math.max(yMax, counts[0]);
+                y2Max = Math.max(y2Max, counts[1]);
                 if (data[i].completion_date === null) {
                     marker = new google.maps.Marker({
                         position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
@@ -83,6 +119,12 @@ $(function() {
                     filled_markers.push(marker);
                 }
             }
+            angular.element(document.getElementById('chart')).scope().$apply(function(scope){
+                scope.options.axes.labelFunction = function(value) { return dates[value] };
+                scope.options.axes.y.max = Math.max(yMax, y2Max);
+                scope.options.axes.y2.max = Math.max(yMax, y2Max);
+                scope.data = chartData;
+            });
         },
         dataType: "json"
     });
