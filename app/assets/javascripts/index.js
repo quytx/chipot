@@ -29,7 +29,6 @@ $(function() {
         var lng = parseFloat(event.latLng.lng());
         var latlng = new google.maps.LatLng(lat, lng);
         geocoder.geocode({'latLng': latlng}, function(results, status) {
-            console.log(results);
             infowindow.setContent(results[0].formatted_address);
             infowindow.setPosition(event.latLng);
             infowindow.open(map);
