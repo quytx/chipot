@@ -11,7 +11,7 @@ $(function() {
     
     var chartData;
     var dates = ["2014-08-10", "2014-08-11", "2014-08-12", "2014-08-13", "2014-08-14", "2014-08-15"];        
-
+    
     convertToX = function(date) {
         return dates.indexOf(date);
     }
