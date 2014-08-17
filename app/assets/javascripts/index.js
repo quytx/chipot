@@ -10,7 +10,13 @@ $(function() {
 
     var map = initialize(mapOptions);
 
-    var marker1 = newMarker(map, latitude, longitude, "Quy's Home");
-    var marker2 = newMarker(map, latitude + 1, longitude - 1, "Quy's Home");
-    var marker3 = newMarker(map, latitude + 2, longitude - 1, "Quy's Home");
+    $.ajax({
+      url: "/potholes.json",
+      success: function(data) {
+        for (var i = 0; i < data.length; i++) {
+            newMarker(map, data[i].latitude, data[i].longitude, "");
+        }
+      },
+      dataType: "json"
+    });
 });
