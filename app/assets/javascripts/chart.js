@@ -3,11 +3,11 @@ var app = angular.module('chartApp', ['PotHoleChartController'])
 app.controller('PotHoleChartController', ['$scope', function($scope){
     $scope.data=[];
 
-    var axesMap = {};
+    $scope.dates = [];
 
     $scope.options = {
       axes: {
-        x: {key: 'x', labelFunction: function(value) {return axesMap[value];}, type: 'linear'},
+        x: {key: 'x', labelFunction: function(value) {return $scope.dates[value];}, type: 'linear'},
         y: {type: 'linear', min: 0, max: 400},
         y2: {type: 'linear', min: 0, max: 400}
       },

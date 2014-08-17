@@ -11,7 +11,7 @@ $(function() {
     
     var chartData;
     var dates = ["2014-08-10", "2014-08-11", "2014-08-12", "2014-08-13", "2014-08-14", "2014-08-15"];        
-    
+
     convertToX = function(date) {
         return dates.indexOf(date);
     }
@@ -120,7 +120,9 @@ $(function() {
                 }
             }
             angular.element(document.getElementById('chart')).scope().$apply(function(scope){
-                scope.options.axes.labelFunction = function(value) { return dates[value] };
+                scope.dates = dates.map(function(date){
+                    return date.substring(5, 10);
+                });
                 scope.options.axes.y.max = Math.max(yMax, y2Max);
                 scope.options.axes.y2.max = Math.max(yMax, y2Max);
                 scope.data = chartData;
