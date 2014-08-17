@@ -10,26 +10,22 @@ $(function() {
 
 
     var chartData;
-    var dates = ["2014-08-10", "2014-08-11", "2014-08-12", "2014-08-13", "2014-08-14", "2014-08-15"];
+    var dates;        
 
-    convertToX = function(date) {
+    convertToX = function(date, dates) {
         return dates.indexOf(date);
     }
 
     resetChart = function(numDates) {
         chartData = [];
         for (var i = 0; i < numDates; i++) {
-            chartData.push({
-                x: i,
-                report: 0,
-                patch: 0
-            });
+            chartData.push({ x: i, report: 0, patch: 0 });
         }
     }
 
-    insertData = function(hole, data) {
-        completeX = convertToX(hole.completion_date);
-        createdX = convertToX(hole.creation_date);
+    insertData = function(hole, data, dates) {
+        completeX = convertToX(hole.completion_date, dates);
+        createdX = convertToX(hole.creation_date, dates);
         var numComplete = 0;
         var numCreate = 0;
         if (completeX > -1 && completeX < dates.length) {
@@ -62,6 +58,7 @@ $(function() {
         var lat = parseFloat(event.latLng.lat());
         var lng = parseFloat(event.latLng.lng());
         var latlng = new google.maps.LatLng(lat, lng);
+
         geocoder.geocode({
             'latLng': latlng
         }, function(results, status) {
@@ -104,14 +101,32 @@ $(function() {
 
     });
 
-    $.ajax({
+    getDatesBetween = function(startDate, endDate) {
+        var start = new Date(startDate);
+        var end = new Date(endDate);
+        var between = [];
+        while (start <= end) {
+            start.setDate(start.getDate() + 1);
+            between.push(new Date(start));
+        }
+
+        return between.map(function(date){ 
+            return date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
+        });
+    }
+
+    getPotholesByDate = function(startDate, endDate) {
+        var dates = getDatesBetween(startDate, endDate);
+
+        $.ajax({
         url: "/potholes.json",
+        data: {all_dates: dates},
         success: function(data) {
             resetChart(dates.length);
             var yMax = 0;
             var y2Max = 0;
             for (var i = 0; i < data.length; i++) {
-                var counts = insertData(data[i], chartData);
+                var counts = insertData(data[i], chartData, dates);
                 yMax = Math.max(yMax, counts[0]);
                 y2Max = Math.max(y2Max, counts[1]);
                 if (data[i].completion_date === null) {
@@ -146,12 +161,19 @@ $(function() {
         },
         dataType: "json"
     });
+    }
 
+    
     $(document).ajaxSuccess(function() {});
 
     google.maps.event.addListener(map, 'click', function(event) {
         infowindow.close();
         makeReportEvent(map, infowindow, event);
+    });
+
+    $("#date-pick").on('submit', function(event){
+        event.preventDefault();
+        getPotholesByDate($('#start-date').val(), $('#end-date').val());
     });
 
 
