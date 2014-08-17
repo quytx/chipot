@@ -13,3 +13,7 @@ body {
     border: groove; 
     height: 500px;
 }
+
+#map-canvas img {
+	max-width: none;
+}
