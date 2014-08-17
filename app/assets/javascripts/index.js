@@ -8,7 +8,7 @@ $(function() {
         zoom: 12
     };
 
-    
+
     var chartData;
     var dates;        
 
@@ -30,11 +30,11 @@ $(function() {
         var numCreate = 0;
         if (completeX > -1 && completeX < dates.length) {
             numComplete = ++data[completeX].patch;
-        } 
+        }
         if (createdX > -1 && createdX < dates.length) {
             numCreate = ++data[createdX].report;
         }
-        return [numCreate, numComplete]; 
+        return [numCreate, numComplete];
     }
 
 
@@ -58,8 +58,11 @@ $(function() {
         var lat = parseFloat(event.latLng.lat());
         var lng = parseFloat(event.latLng.lng());
         var latlng = new google.maps.LatLng(lat, lng);
-        geocoder.geocode({'latLng': latlng}, function(results, status) {
-            var address = String("'"+results[0].formatted_address+"'");
+
+        geocoder.geocode({
+            'latLng': latlng
+        }, function(results, status) {
+            var address = String("'" + results[0].formatted_address + "'");
             var dropDownForm = "<form id='reportSubmit'>\
                                     <input type='hidden' name='latitude' value=" + lat + ">\
                                     <input type='hidden' name='longitude' value=" + lng + ">\
@@ -82,11 +85,21 @@ $(function() {
         event.preventDefault();
         var form = $(this).serializeArray();
 
-        $.post("/submitReport", form, function(response){
-            console.log(response);
-        })
-            
-    })
+        $.post('/submitReport', form, function(data, textStatus, xhr) {
+            if (xhr.status === 200) {
+                infowindow.setContent("Your request has been submitted");
+                setTimeout(function() {
+                    infowindow.close();
+                }, 3000);
+            } else {
+                infowindow.setContent("Unable to process your request");
+                setTimeout(function() {
+                    infowindow.close();
+                }, 4000);
+            }
+        }, 'json');
+
+    });
 
     getDatesBetween = function(startDate, endDate) {
         var start = new Date(startDate);
@@ -136,6 +149,7 @@ $(function() {
                     filled_markers.push(marker);
                 }
             }
+
             angular.element(document.getElementById('chart')).scope().$apply(function(scope){
                 scope.dates = dates.map(function(date){
                     return date.substring(5, 10);
@@ -149,48 +163,7 @@ $(function() {
     });
     }
 
-    // $.ajax({
-    //     url: "/potholes.json",
-    //     success: function(data) {
-    //         resetChart(dates.length);
-    //         var yMax = 0; 
-    //         var y2Max = 0;
-    //         for (var i = 0; i < data.length; i++) {
-    //             var counts = insertData(data[i], chartData);
-    //             yMax = Math.max(yMax, counts[0]);
-    //             y2Max = Math.max(y2Max, counts[1]);
-    //             if (data[i].completion_date === null) {
-    //                 marker = new google.maps.Marker({
-    //                     position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
-    //                     map: map,
-    //                     icon: '/assets/red_MarkerA.png',
-    //                     optimized: false
-    //                 });
-    //                 makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Street Address: " + data[i].street_address, marker);
-    //                 unfilled_markers.push(marker);
-    //             } else {
-    //                 marker = new google.maps.Marker({
-    //                     position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
-    //                     map: map,
-    //                     icon: '/assets/green_MarkerA.png',
-    //                     optimized: false
-    //                 });
-    //                 makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Completed Date: " + data[i].completion_date + "<br>" + "Street Address: " + data[i].street_address, marker);
-    //                 filled_markers.push(marker);
-    //             }
-    //         }
-    //         angular.element(document.getElementById('chart')).scope().$apply(function(scope){
-    //             scope.dates = dates.map(function(date){
-    //                 return date.substring(5, 10);
-    //             });
-    //             scope.options.axes.y.max = Math.max(yMax, y2Max);
-    //             scope.options.axes.y2.max = Math.max(yMax, y2Max);
-    //             scope.data = chartData;
-    //         });
-    //     },
-    //     dataType: "json"
-    // });
-
+    
     $(document).ajaxSuccess(function() {});
 
     google.maps.event.addListener(map, 'click', function(event) {
@@ -241,6 +214,5 @@ $(function() {
     };
 
     $("#pac-input").bind("keypress", {}, search);
-
 
 });
