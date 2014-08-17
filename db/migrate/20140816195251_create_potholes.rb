@@ -8,7 +8,6 @@ class CreatePotholes < ActiveRecord::Migration
       t.string :zip
       t.string :latitude
       t.string :longitude
-      t.string :location
       t.string :service_request_number
       t.string :current_activity
       t.string :most_recent_action

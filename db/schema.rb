@@ -24,7 +24,6 @@ ActiveRecord::Schema.define(version: 20140816195251) do
     t.string   "zip"
     t.string   "latitude"
     t.string   "longitude"
-    t.string   "location"
     t.string   "service_request_number"
     t.string   "current_activity"
     t.string   "most_recent_action"

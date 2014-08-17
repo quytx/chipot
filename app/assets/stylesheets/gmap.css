@@ -12,5 +12,8 @@ body {
     position: fixed;
     border: groove; 
     height: 500px;
-    left: 40%;
+}
+
+#map-canvas img {
+	max-width: none;
 }
