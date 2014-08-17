@@ -8,10 +8,10 @@ $(function() {
         zoom: 12
     };
 
-    
+
     var chartData;
-    var dates = ["2014-08-10", "2014-08-11", "2014-08-12", "2014-08-13", "2014-08-14", "2014-08-15"];        
-    
+    var dates = ["2014-08-10", "2014-08-11", "2014-08-12", "2014-08-13", "2014-08-14", "2014-08-15"];
+
     convertToX = function(date) {
         return dates.indexOf(date);
     }
@@ -19,7 +19,11 @@ $(function() {
     resetChart = function(numDates) {
         chartData = [];
         for (var i = 0; i < numDates; i++) {
-            chartData.push({ x: i, report: 0, patch: 0 });
+            chartData.push({
+                x: i,
+                report: 0,
+                patch: 0
+            });
         }
     }
 
@@ -30,11 +34,11 @@ $(function() {
         var numCreate = 0;
         if (completeX > -1 && completeX < dates.length) {
             numComplete = ++data[completeX].patch;
-        } 
+        }
         if (createdX > -1 && createdX < dates.length) {
             numCreate = ++data[createdX].report;
         }
-        return [numCreate, numComplete]; 
+        return [numCreate, numComplete];
     }
 
 
@@ -58,8 +62,10 @@ $(function() {
         var lat = parseFloat(event.latLng.lat());
         var lng = parseFloat(event.latLng.lng());
         var latlng = new google.maps.LatLng(lat, lng);
-        geocoder.geocode({'latLng': latlng}, function(results, status) {
-            var address = String("'"+results[0].formatted_address+"'");
+        geocoder.geocode({
+            'latLng': latlng
+        }, function(results, status) {
+            var address = String("'" + results[0].formatted_address + "'");
             console.log(address);
             var dropDownForm = "<form id='reportSubmit'>\
                                     <input type='hidden' name='latitude' value=" + lat + ">\
@@ -83,17 +89,34 @@ $(function() {
         event.preventDefault();
         var form = $(this).serializeArray();
 
-        $.post("/submitReport", form, function(response){
-            console.log(response);
-        })
-            
-    })
+        $.post('/submitReport', form, function(data, textStatus, xhr) {
+            if (xhr.status === 200) {
+                console.log("YAY THIS WORKS!");
+                infowindow.setContent("Your request has been submitted");
+                setTimeout(function() {
+                    infowindow.close();
+                }, 3000);
+            } else {
+                console.log("BOOO SCREW YOU!");
+                infowindow.setContent("Unable to process your request");
+                setTimeout(function() {
+                    infowindow.close();
+                }, 4000);
+            }
+            console.log("this is xhr>");
+            console.log(xhr);
+            console.log(xhr.status);
+            console.log(xhr.statusText);
+
+        }, 'json');
+
+    });
 
     $.ajax({
         url: "/potholes.json",
         success: function(data) {
             resetChart(dates.length);
-            var yMax = 0; 
+            var yMax = 0;
             var y2Max = 0;
             for (var i = 0; i < data.length; i++) {
                 var counts = insertData(data[i], chartData);
@@ -119,8 +142,10 @@ $(function() {
                     filled_markers.push(marker);
                 }
             }
-            angular.element(document.getElementById('chart')).scope().$apply(function(scope){
-                scope.options.axes.labelFunction = function(value) { return dates[value] };
+            angular.element(document.getElementById('chart')).scope().$apply(function(scope) {
+                scope.options.axes.labelFunction = function(value) {
+                    return dates[value]
+                };
                 scope.options.axes.y.max = Math.max(yMax, y2Max);
                 scope.options.axes.y2.max = Math.max(yMax, y2Max);
                 scope.data = chartData;
