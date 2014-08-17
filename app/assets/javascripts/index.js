@@ -17,8 +17,13 @@ $(function() {
             infowindow.setContent(contentString);
             infowindow.open(map, marker);
         });
-    }
+    };
 
+    function makeReportEvent(map, infowindow, event) {
+        infowindow.setContent(event.latLng.lat()+","+event.latLng.lng());
+        infowindow.setPosition(event.latLng);
+        infowindow.open(map); 
+    };
 
     $.ajax({
         url: "/potholes.json",
@@ -49,6 +54,7 @@ $(function() {
 
     google.maps.event.addListener(map, 'click', function(event) {
         infowindow.close();
+        makeReportEvent(map, infowindow, event);
     });
 
 });
