@@ -16,6 +16,7 @@ class HomepagesController < ApplicationController
 
   def submitReport
 
+
     uri = URI.parse('http://test311request.cityofchicago.org/open311/v2/requests.json')
     api_key = ENV["open311_key"]
 
@@ -30,11 +31,12 @@ class HomepagesController < ApplicationController
 
     response = http.request(request)
     msg = response.body
-
     token = JSON.parse(msg).pop["token"]
-
     respond_to do |format|
-      format.html
+      format.json {
+        render :json => {msg: token}
+        # render :json => "#{token.to_json}", :content_type => "text/html"
+      }
     end
   end
 
