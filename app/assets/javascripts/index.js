@@ -24,9 +24,9 @@ $(function() {
     };
 
     function makeReportEvent(map, infowindow, event) {
-        infowindow.setContent(event.latLng.lat()+","+event.latLng.lng());
+        infowindow.setContent(event.latLng.lat() + "," + event.latLng.lng());
         infowindow.setPosition(event.latLng);
-        infowindow.open(map); 
+        infowindow.open(map);
     };
 
     $.ajax({
