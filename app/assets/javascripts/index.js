@@ -75,12 +75,10 @@ $(function() {
 
     $("#filled").on('click', function() {
         if ($("#filled").prop("checked")) {
-            console.log("this is checked");
             for (var i = 0; i < filled_markers.length; ++i) {
                 filled_markers[i].setVisible(false);
             }
         } else {
-            console.log("this is unchecked");
             for (var i = 0; i < filled_markers.length; ++i) {
                 filled_markers[i].setVisible(true);
             }
