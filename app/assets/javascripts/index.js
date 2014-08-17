@@ -15,6 +15,7 @@ $(function() {
     var marker = "";
     var unfilled_markers = [];
     var filled_markers = [];
+    var geocoder = new google.maps.Geocoder();
 
     function makeInfoWindowEvent(map, infowindow, contentString, marker) {
         google.maps.event.addListener(marker, 'click', function() {
@@ -24,9 +25,15 @@ $(function() {
     };
 
     function makeReportEvent(map, infowindow, event) {
-        infowindow.setContent(event.latLng.lat() + "," + event.latLng.lng());
-        infowindow.setPosition(event.latLng);
-        infowindow.open(map);
+        var lat = parseFloat(event.latLng.lat());
+        var lng = parseFloat(event.latLng.lng());
+        var latlng = new google.maps.LatLng(lat, lng);
+        geocoder.geocode({'latLng': latlng}, function(results, status) {
+            console.log(results);
+            infowindow.setContent(results[0].formatted_address);
+            infowindow.setPosition(event.latLng);
+            infowindow.open(map);
+        });
     };
 
     $.ajax({
@@ -84,7 +91,6 @@ $(function() {
     function search(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         var target = document.getElementById('pac-input');
-        var geocoder = new google.maps.Geocoder();
         if (code == 13) { //Enter keycode
             e.preventDefault();
             geocoder.geocode({
