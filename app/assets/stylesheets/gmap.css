@@ -9,7 +9,7 @@ body {
 }
 
 .metro #map-section { 
-    height: 500px;
+    height: 400px;
     width: 600px;
     float: right;
     margin-right: 30px;
@@ -23,6 +23,10 @@ body {
 
 #map-canvas img {
 	max-width: none;
+}
+
+#date-range {
+  margin-left: 10%;
 }
 
 
