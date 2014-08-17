@@ -66,7 +66,6 @@ $(function() {
             'latLng': latlng
         }, function(results, status) {
             var address = String("'" + results[0].formatted_address + "'");
-            console.log(address);
             var dropDownForm = "<form id='reportSubmit'>\
                                     <input type='hidden' name='latitude' value=" + lat + ">\
                                     <input type='hidden' name='longitude' value=" + lng + ">\
@@ -91,23 +90,16 @@ $(function() {
 
         $.post('/submitReport', form, function(data, textStatus, xhr) {
             if (xhr.status === 200) {
-                console.log("YAY THIS WORKS!");
                 infowindow.setContent("Your request has been submitted");
                 setTimeout(function() {
                     infowindow.close();
                 }, 3000);
             } else {
-                console.log("BOOO SCREW YOU!");
                 infowindow.setContent("Unable to process your request");
                 setTimeout(function() {
                     infowindow.close();
                 }, 4000);
             }
-            console.log("this is xhr>");
-            console.log(xhr);
-            console.log(xhr.status);
-            console.log(xhr.statusText);
-
         }, 'json');
 
     });
