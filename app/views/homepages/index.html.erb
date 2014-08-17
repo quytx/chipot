@@ -2,14 +2,22 @@
   <h1>Fill My Hole</h1>
 </div>
 
-<input id="pac-input" class="controls" type="text" placeholder="Find your hole">
-<div class="input-control checkbox">
-    <label>
-        <input type="checkbox" id="filled"/>
-        <span class="check"></span>
-        Unfilled only
-    </label>
+<div id="chart" ng-app="chartApp" ng-controller="PotHoleChartController">
+    <linechart data="data" options="options" mode=""></linechart>
 </div>
-<div id="map-canvas">
+
+<div id='map-section'>
+    <input id="pac-input" class="controls" type="text" placeholder="Find your hole">
+    <div class="input-control checkbox">
+        <label>
+            <input type="checkbox" id="filled"/>
+            <span class="check"></span>
+            Unfilled only
+        </label>
+    </div>
+    <div id="map-canvas">
+    </div>
 </div>
+
+
 
