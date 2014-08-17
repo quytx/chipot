@@ -8,4 +8,3 @@ Rails.application.config.assets.version = '1.0'
 # Rails.application.config.assets.precompile += %w( search.js )
 Rails.application.config.assets.precompile += %w( gmap.css )
 Rails.application.config.assets.precompile += %w( gmap.js )
-Rails.application.config.assets.precompile += %w( marker.js )
