@@ -30,7 +30,7 @@ body {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-  #searchTextField {
+  #pac-input {
     background-color: #fff;
     padding: 0 11px 0 13px;
     width: 400px;
@@ -40,7 +40,7 @@ body {
     text-overflow: ellipsis;
   }
 
-  #searchTextField:focus {
+  #pac-input:focus {
     border-color: #4d90fe;
     margin-left: -1px;
     padding-left: 14px;  /* Regular padding-left + 1. */
