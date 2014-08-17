@@ -54,6 +54,15 @@ $(function() {
         });
     };
 
+    function clearMarkers() {
+      for (var i = 0; i < unfilled_markers.length; i++) {
+        unfilled_markers[i].setMap(null);
+      }
+      for (var i = 0; i < filled_markers.length; i++) {
+        filled_markers[i].setMap(null);
+      }
+    }
+
     function makeReportEvent(map, infowindow, event) {
         var lat = parseFloat(event.latLng.lat());
         var lng = parseFloat(event.latLng.lng());
@@ -125,6 +134,7 @@ $(function() {
             if (data == null || data.length == 0) {
                 alert("There is no data for this period. Please choose another date");
             } else {
+                clearMarkers();
                 resetChart(dates.length);
                 var yMax = 0;
                 var y2Max = 0;
