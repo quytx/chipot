@@ -39,7 +39,7 @@ $(function() {
     };
 
     var clusterOptions = {
-        gridSize: 50,
+        gridSize: 70,
         maxZoom: 14
     };
 
@@ -120,6 +120,8 @@ $(function() {
                                       <option value='INTERSEC'>Intersection</option>\
                                       <option value='TRAFFIC'>Traffic Lane</option>\
                                     </select>\
+                                    <label for='activity'>Enter phone # to receive text updates about your request (optional):</label>\
+                                    <input type='text' pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}' name='activity' placeholder='###-###-####'>\
                                     <br>\
                                     <br><input type='submit' value='Submit'>\
                                 </form>"
@@ -131,6 +133,8 @@ $(function() {
 
     $('#map-canvas').on('submit', '#reportSubmit', function(event) {
         event.preventDefault();
+        // infowindow.setContent("<img align='center' src=/assets/loading.gif>")
+        infowindow.setContent("<img align='center' src='/assets/loading.gif'>")
         var form = $(this).serializeArray();
 
         $.post('/submitReport', form, function(data, textStatus, xhr) {
@@ -205,7 +209,6 @@ $(function() {
                     }
                 }
 
-                // mc = new MarkerClusterer(map, unfilled_markers.concat(filled_markers), clusterOptions);
                 mc.addMarkers(unfilled_markers.concat(filled_markers));
 
                 angular.element(document.getElementById('chart')).scope().$apply(function(scope){
@@ -238,24 +241,14 @@ $(function() {
 
 
     $("#filled").on('click', function() {
-        // google.maps.event.addListener(marker, function(){
-        //     if ( marker.getVisible() ) {
-        //             mc.addMarker(marker, true);
-        //     } else {
-        //             mc.removeMarker(marker, true);
-        //     }
-        // });
+
         if ($("#filled").prop("checked")) {
             for (var i = 0; i < filled_markers.length; ++i) {
                 filled_markers[i].setVisible(false);
-                // mc.removeMarker(marker, true);
-                // mc.repaint();
             }
         } else {
             for (var i = 0; i < filled_markers.length; ++i) {
                 filled_markers[i].setVisible(true);
-                // mc.addMarker(marker, true);
-                // mc.repaint();
             }
         }
     });
