@@ -34,14 +34,14 @@ gem 'angularjs-rails'
 
 
 #City of Chicago API
-gem 'soda-ruby'
+gem 'soda-ruby', require: 'soda/client'
 
 # photo
 gem 'carrierwave'
 gem 'fog'
 
 group :development, :test do
-  gem 'rspec-rails'
+    gem 'rspec-rails'
 end
 
 # Use ActiveModel has_secure_password

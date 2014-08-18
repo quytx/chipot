@@ -6,8 +6,6 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-require 'soda/client'
-
 client = SODA::Client.new({:domain => "data.cityofchicago.org", :app_token => ENV["App_Token"]})
 count = 0
 6.times do
