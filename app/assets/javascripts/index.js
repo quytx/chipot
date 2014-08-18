@@ -2,32 +2,25 @@ $(function() {
 
     $('#start-draw').on('click', function(e){
         var size = "size=" + "640x480&";
-        var pano = "pano=" + map.streetView.location.pano + "&";
-        var heading = "heading=" + map.streetView.pov.heading + "&";
-        var pitch = "pitch=" + map.streetView.pov.pitch + "&";
-        // var zoom = "zoom=" + map.streetView.location.pov.zoom + "&";
+        // if (map.streetview == null) {
+        //     alert('Please switch to Street View first!');
+        // } else {
+            var pano = "pano=" + map.streetView.location.pano + "&";
+            var heading = "heading=" + map.streetView.pov.heading + "&";
+            var pitch = "pitch=" + map.streetView.pov.pitch + "&";
+            // var zoom = "zoom=" + map.streetView.location.pov.zoom + "&";
 
-        var url = "http://maps.googleapis.com/maps/api/streetview?" + size + pano + heading + pitch;
-        $('#street-view-image').attr("src", url);
-        $('.metro').hide();
-        $('.draw').show();
+            var url = "http://maps.googleapis.com/maps/api/streetview?" + size + pano + heading + pitch;
+            $('#street-view-image').attr("src", url);
+            $('.metro').hide();
+            $('.draw').show();
+        // }
     });
     
 
     var sketchPad = createSketchpad();
 
-    $('#undo-button').on('click', function(e){
-        sketchPad.undo();
-    });
-
-    $('#clear-button').on('click', function(e){
-        sketchPad.clear();
-    });
-
-    $('#done-button').on('click', function(e){
-        $('.metro').show();
-        $('.draw').hide();
-    });
+    startDrawing(sketchPad);
 
     // ==================
     var latitude = 41.881487;
