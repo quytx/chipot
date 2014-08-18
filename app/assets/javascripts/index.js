@@ -10,7 +10,7 @@ $(function() {
 
     var clusterOptions = {
         gridSize: 50,
-        maxZoom: 13
+        maxZoom: 14
     };
 
     var chartData;
@@ -196,7 +196,9 @@ $(function() {
 
     google.maps.event.addListener(map, 'click', function(event) {
         infowindow.close();
-        makeReportEvent(map, infowindow, event);
+        if (map.zoom > 14) {
+            makeReportEvent(map, infowindow, event);
+        }
     });
 
     $("#date-pick").on('submit', function(event){
