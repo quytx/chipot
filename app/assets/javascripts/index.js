@@ -1,3 +1,31 @@
+<<<<<<< HEAD
+=======
+$(function() {
+
+
+    $('#start-draw').on('click', function(e) {
+        var size = "size=" + "640x480&";
+        // if (map.streetview == null) {
+        //     alert('Please switch to Street View first!');
+        // } else {
+        var pano = "pano=" + map.streetView.location.pano + "&";
+        var heading = "heading=" + map.streetView.pov.heading + "&";
+        var pitch = "pitch=" + map.streetView.pov.pitch + "&";
+        // var zoom = "zoom=" + map.streetView.location.pov.zoom + "&";
+
+        var url = "http://maps.googleapis.com/maps/api/streetview?" + size + pano + heading + pitch;
+        $('#street-view-image').attr("src", url);
+        $('.metro').hide();
+        $('.draw').show();
+        // }
+    });
+
+    var sketchPad = createSketchpad();
+
+    startDrawing(sketchPad);
+
+    // ==================
+>>>>>>> bc1b1537b85163a25bc10fb19c8fb5c2c0356a1f
     var latitude = 41.881487;
     var longitude = -87.631219;
 
@@ -14,6 +42,8 @@
     var chartData;
     var dates;
 
+
+
     convertToX = function(date, dates) {
         return dates.indexOf(date);
     }
@@ -26,6 +56,10 @@
                 report: 0,
                 patch: 0
             });
+<<<<<<< HEAD
+=======
+
+>>>>>>> bc1b1537b85163a25bc10fb19c8fb5c2c0356a1f
         }
     }
 
@@ -251,4 +285,8 @@
 
     $("#pac-input").bind("keypress", {}, search);
 
+<<<<<<< HEAD
     });
+=======
+});
+>>>>>>> bc1b1537b85163a25bc10fb19c8fb5c2c0356a1f
