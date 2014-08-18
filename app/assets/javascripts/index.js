@@ -8,9 +8,13 @@ $(function() {
         zoom: 12
     };
 
+    var clusterOptions = {
+        gridSize: 50,
+        maxZoom: 13
+    };
 
     var chartData;
-    var dates;        
+    var dates;
 
     convertToX = function(date, dates) {
         return dates.indexOf(date);
@@ -39,6 +43,7 @@ $(function() {
 
 
     var map = initialize(mapOptions);
+
 
     // Search
     var infowindow = new google.maps.InfoWindow();
@@ -166,6 +171,8 @@ $(function() {
                     }
                 }
 
+                var mc = new MarkerClusterer(map, unfilled_markers, clusterOptions);
+
                 angular.element(document.getElementById('chart')).scope().$apply(function(scope){
                     scope.dates = dates.map(function(date){
                         return date.substring(5, 10);
@@ -180,7 +187,6 @@ $(function() {
     });
     }
 
-    
     $(document).ajaxSuccess(function() {});
 
     google.maps.event.addListener(map, 'click', function(event) {
