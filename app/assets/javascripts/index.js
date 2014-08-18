@@ -1,7 +1,7 @@
 $(function() {
 
-    var latitude = 41.8337329;
-    var longitude = -87.7321555;
+    var latitude = 41.881487;
+    var longitude = -87.631219;
 
     var mapOptions = {
         center: new google.maps.LatLng(latitude, longitude),
@@ -72,19 +72,22 @@ $(function() {
             'latLng': latlng
         }, function(results, status) {
             var address = String("'" + results[0].formatted_address + "'");
-            var dropDownForm = "<form id='reportSubmit'>\
+            var dropDownForm = "<h4>Submit a report for this location</h4>\
+                                <form id='reportSubmit'>\
                                     <input type='hidden' name='latitude' value=" + lat + ">\
                                     <input type='hidden' name='longitude' value=" + lng + ">\
                                     <input type='hidden' name='address' value=" + address + ">\
+                                    <label for='attribute'>Where is the pothole located? </label>\
                                     <select name='attribute'>\
                                       <option value='CURB'>Curb Lane</option>\
                                       <option value='CROSS'>Crosswalk</option>\
                                       <option value='INTERSEC'>Intersection</option>\
                                       <option value='TRAFFIC'>Traffic Lane</option>\
-                                    </select><br>\
-                                    <input type='submit' value='Submit'>\
+                                    </select>\
+                                    <br>\
+                                    <br><input type='submit' value='Submit'>\
                                 </form>"
-            infowindow.setContent("Submit a pothole report!" + dropDownForm);
+            infowindow.setContent(dropDownForm);
             infowindow.setPosition(event.latLng);
             infowindow.open(map);
         });
