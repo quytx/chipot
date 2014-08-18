@@ -10,7 +10,7 @@ $(function() {
 
 
     var chartData;
-    var dates;        
+    var dates;
 
     convertToX = function(date, dates) {
         return dates.indexOf(date);
@@ -19,7 +19,11 @@ $(function() {
     resetChart = function(numDates) {
         chartData = [];
         for (var i = 0; i < numDates; i++) {
-            chartData.push({ x: i, report: 0, patch: 0 });
+            chartData.push({
+                x: i,
+                report: 0,
+                patch: 0
+            });
         }
     }
 
@@ -40,6 +44,56 @@ $(function() {
 
     var map = initialize(mapOptions);
 
+    // This is getting the location
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = new google.maps.LatLng(position.coords.latitude,
+                position.coords.longitude);
+
+            var infowindow = new google.maps.InfoWindow({
+                map: map,
+                position: pos,
+                content: 'You are Here!'
+            });
+            setTimeout(function() {
+                infowindow.close();
+            }, 2000);
+            map.setCenter(pos);
+        }, function() {
+            handleNoGeolocation(true);
+        });
+    } else {
+        // Browser doesn't support Geolocation
+        handleNoGeolocation(false);
+    }
+
+
+    function handleNoGeolocation(errorFlag) {
+        if (errorFlag) {
+            var content = 'Error: The Geolocation service failed.';
+        } else {
+            var content = 'Error: Your browser doesn\'t support geolocation.';
+        }
+
+        var options = {
+            map: map,
+            position: new google.maps.LatLng(60, 105),
+            content: content
+        };
+
+        var infowindow = new google.maps.InfoWindow(options);
+        map.setCenter(options.position);
+    }
+
+    //geting location is ending here
+
+
+
+
+
+
+
     // Search
     var infowindow = new google.maps.InfoWindow();
     var marker = "";
@@ -55,12 +109,12 @@ $(function() {
     };
 
     function clearMarkers() {
-      for (var i = 0; i < unfilled_markers.length; i++) {
-        unfilled_markers[i].setMap(null);
-      }
-      for (var i = 0; i < filled_markers.length; i++) {
-        filled_markers[i].setMap(null);
-      }
+        for (var i = 0; i < unfilled_markers.length; i++) {
+            unfilled_markers[i].setMap(null);
+        }
+        for (var i = 0; i < filled_markers.length; i++) {
+            filled_markers[i].setMap(null);
+        }
     }
 
     function makeReportEvent(map, infowindow, event) {
@@ -119,7 +173,7 @@ $(function() {
             between.push(new Date(start));
         }
 
-        return between.map(function(date){ 
+        return between.map(function(date) {
             return date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
         });
     }
@@ -128,56 +182,58 @@ $(function() {
         var dates = getDatesBetween(startDate, endDate);
 
         $.ajax({
-        url: "/potholes.json",
-        data: {all_dates: dates},
-        success: function(data) {
-            if (data == null || data.length == 0) {
-                alert("There is no data for this period. Please choose another date");
-            } else {
-                clearMarkers();
-                resetChart(dates.length);
-                var yMax = 0;
-                var y2Max = 0;
-                for (var i = 0; i < data.length; i++) {
-                    var counts = insertData(data[i], chartData, dates);
-                    yMax = Math.max(yMax, counts[0]);
-                    y2Max = Math.max(y2Max, counts[1]);
-                    if (data[i].completion_date === null) {
-                        marker = new google.maps.Marker({
-                            position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
-                            map: map,
-                            icon: '/assets/red_MarkerA.png',
-                            optimized: false
-                        });
-                        makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Street Address: " + data[i].street_address, marker);
-                        unfilled_markers.push(marker);
-                    } else {
-                        marker = new google.maps.Marker({
-                            position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
-                            map: map,
-                            icon: '/assets/green_MarkerA.png',
-                            optimized: false
-                        });
-                        makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Completed Date: " + data[i].completion_date + "<br>" + "Street Address: " + data[i].street_address, marker);
-                        filled_markers.push(marker);
+            url: "/potholes.json",
+            data: {
+                all_dates: dates
+            },
+            success: function(data) {
+                if (data == null || data.length == 0) {
+                    alert("There is no data for this period. Please choose another date");
+                } else {
+                    clearMarkers();
+                    resetChart(dates.length);
+                    var yMax = 0;
+                    var y2Max = 0;
+                    for (var i = 0; i < data.length; i++) {
+                        var counts = insertData(data[i], chartData, dates);
+                        yMax = Math.max(yMax, counts[0]);
+                        y2Max = Math.max(y2Max, counts[1]);
+                        if (data[i].completion_date === null) {
+                            marker = new google.maps.Marker({
+                                position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
+                                map: map,
+                                icon: '/assets/red_MarkerA.png',
+                                optimized: false
+                            });
+                            makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Street Address: " + data[i].street_address, marker);
+                            unfilled_markers.push(marker);
+                        } else {
+                            marker = new google.maps.Marker({
+                                position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
+                                map: map,
+                                icon: '/assets/green_MarkerA.png',
+                                optimized: false
+                            });
+                            makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Completed Date: " + data[i].completion_date + "<br>" + "Street Address: " + data[i].street_address, marker);
+                            filled_markers.push(marker);
+                        }
                     }
-                }
 
-                angular.element(document.getElementById('chart')).scope().$apply(function(scope){
-                    scope.dates = dates.map(function(date){
-                        return date.substring(5, 10);
+                    angular.element(document.getElementById('chart')).scope().$apply(function(scope) {
+                        scope.dates = dates.map(function(date) {
+                            return date.substring(5, 10);
+                        });
+                        scope.options.axes.y.max = Math.max(yMax, y2Max);
+                        scope.options.axes.y2.max = Math.max(yMax, y2Max);
+                        scope.data = chartData;
                     });
-                    scope.options.axes.y.max = Math.max(yMax, y2Max);
-                    scope.options.axes.y2.max = Math.max(yMax, y2Max);
-                    scope.data = chartData;
-                });
-            }    
-        },
-        dataType: "json"
-    });
+                }
+            },
+            dataType: "json"
+        });
     }
 
-    
+
     $(document).ajaxSuccess(function() {});
 
     google.maps.event.addListener(map, 'click', function(event) {
@@ -185,7 +241,7 @@ $(function() {
         makeReportEvent(map, infowindow, event);
     });
 
-    $("#date-pick").on('submit', function(event){
+    $("#date-pick").on('submit', function(event) {
         event.preventDefault();
         getPotholesByDate($('#start-date').val(), $('#end-date').val());
     });
