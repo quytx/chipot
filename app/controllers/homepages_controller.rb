@@ -27,8 +27,9 @@ class HomepagesController < ApplicationController
                            'lat' => params["latitude"],
                            'long' => params["longitude"],
                            'address_string' => params["address"],
+                           'description' => params["description"],
                            'attribute[WHEREIST]' => params["attribute"],
-                           'activity[A511OPTN]' => params["activity"]})
+                           'attribute[A511OPTN]' => params["phone"]})
 
     response = http.request(request)
     msg = response.body

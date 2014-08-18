@@ -90,8 +90,10 @@ $(function() {
                                       <option value='INTERSEC'>Intersection</option>\
                                       <option value='TRAFFIC'>Traffic Lane</option>\
                                     </select>\
-                                    <label for='activity'>Enter phone # to receive text updates about your request (optional):</label>\
-                                    <input type='text' pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}' name='activity' placeholder='###-###-####'>\
+                                    <label for='description'>Write a description of the pothole below (optional):</label>\
+                                    <textarea name='description' cols='40' rows='4' maxLength='500' placeholder='Description here...'></textarea>\
+                                    <label for='phone'>Enter phone # to receive text updates about your request (optional):</label>\
+                                    <input type='text' pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}' name='phone' placeholder='###-###-####'>\
                                     <br>\
                                     <br><input type='submit' value='Submit'>\
                                 </form>"
@@ -103,7 +105,6 @@ $(function() {
 
     $('#map-canvas').on('submit', '#reportSubmit', function(event) {
         event.preventDefault();
-        // infowindow.setContent("<img align='center' src=/assets/loading.gif>")
         infowindow.setContent("<img align='center' src='/assets/loading.gif'>")
         var form = $(this).serializeArray();
 
