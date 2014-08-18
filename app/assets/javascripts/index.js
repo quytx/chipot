@@ -1,5 +1,35 @@
 $(function() {
 
+    $('#start-draw').on('click', function(e){
+        var size = "size=" + "640x480&";
+        var pano = "pano=" + map.streetView.location.pano + "&";
+        var heading = "heading=" + map.streetView.pov.heading + "&";
+        var pitch = "pitch=" + map.streetView.pov.pitch + "&";
+        // var zoom = "zoom=" + map.streetView.location.pov.zoom + "&";
+
+        var url = "http://maps.googleapis.com/maps/api/streetview?" + size + pano + heading + pitch;
+        $('#street-view-image').attr("src", url);
+        $('.metro').hide();
+        $('.draw').show();
+    });
+    
+
+    var sketchPad = createSketchpad();
+
+    $('#undo-button').on('click', function(e){
+        sketchPad.undo();
+    });
+
+    $('#clear-button').on('click', function(e){
+        sketchPad.clear();
+    });
+
+    $('#done-button').on('click', function(e){
+        $('.metro').show();
+        $('.draw').hide();
+    });
+
+    // ==================
     var latitude = 41.881487;
     var longitude = -87.631219;
 
@@ -7,32 +37,6 @@ $(function() {
         center: new google.maps.LatLng(latitude, longitude),
         zoom: 12
     };
-
-    var drawingManager = new google.maps.drawing.DrawingManager({
-        drawingMode: google.maps.drawing.OverlayType.MARKER,
-        drawingControl: true,
-        drawingControlOptions: {
-          position: google.maps.ControlPosition.TOP_CENTER,
-          drawingModes: [
-            google.maps.drawing.OverlayType.MARKER,
-            google.maps.drawing.OverlayType.CIRCLE,
-            google.maps.drawing.OverlayType.POLYGON,
-            google.maps.drawing.OverlayType.POLYLINE,
-            google.maps.drawing.OverlayType.RECTANGLE
-          ]
-        },
-        markerOptions: {
-          icon: 'images/beachflag.png'
-        },
-        circleOptions: {
-          fillColor: '#ffff00',
-          fillOpacity: 1,
-          strokeWeight: 5,
-          clickable: false,
-          editable: true,
-          zIndex: 1
-        }
-    });
 
     var clusterOptions = {
         gridSize: 50,
@@ -69,8 +73,6 @@ $(function() {
 
 
     var map = initialize(mapOptions);
-
-    drawingManager.setMap(map);
 
     var mc = new MarkerClusterer(map, [], clusterOptions);
 
