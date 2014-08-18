@@ -1,16 +1,20 @@
 $(function() {
 
-    var latitude = 41.8337329;
-    var longitude = -87.7321555;
+    var latitude = 41.881487;
+    var longitude = -87.631219;
 
     var mapOptions = {
         center: new google.maps.LatLng(latitude, longitude),
         zoom: 12
     };
 
+    var clusterOptions = {
+        gridSize: 50,
+        maxZoom: 13
+    };
 
     var chartData;
-    var dates;        
+    var dates;
 
     convertToX = function(date, dates) {
         return dates.indexOf(date);
@@ -39,6 +43,8 @@ $(function() {
 
 
     var map = initialize(mapOptions);
+    var mc = new MarkerClusterer(map, [], clusterOptions);
+
 
     // Search
     var infowindow = new google.maps.InfoWindow();
@@ -72,19 +78,22 @@ $(function() {
             'latLng': latlng
         }, function(results, status) {
             var address = String("'" + results[0].formatted_address + "'");
-            var dropDownForm = "<form id='reportSubmit'>\
+            var dropDownForm = "<h4>Submit a report for this location</h4>\
+                                <form id='reportSubmit'>\
                                     <input type='hidden' name='latitude' value=" + lat + ">\
                                     <input type='hidden' name='longitude' value=" + lng + ">\
                                     <input type='hidden' name='address' value=" + address + ">\
+                                    <label for='attribute'>Where is the pothole located? </label>\
                                     <select name='attribute'>\
                                       <option value='CURB'>Curb Lane</option>\
                                       <option value='CROSS'>Crosswalk</option>\
                                       <option value='INTERSEC'>Intersection</option>\
                                       <option value='TRAFFIC'>Traffic Lane</option>\
-                                    </select><br>\
-                                    <input type='submit' value='Submit'>\
+                                    </select>\
+                                    <br>\
+                                    <br><input type='submit' value='Submit'>\
                                 </form>"
-            infowindow.setContent("Submit a pothole report!" + dropDownForm);
+            infowindow.setContent(dropDownForm);
             infowindow.setPosition(event.latLng);
             infowindow.open(map);
         });
@@ -126,6 +135,9 @@ $(function() {
 
     getPotholesByDate = function(startDate, endDate) {
         var dates = getDatesBetween(startDate, endDate);
+            filled_markers = [];
+            unfilled_markers = [];
+            mc.clearMarkers();
 
         $.ajax({
         url: "/potholes.json",
@@ -163,6 +175,9 @@ $(function() {
                     }
                 }
 
+                // mc = new MarkerClusterer(map, unfilled_markers.concat(filled_markers), clusterOptions);
+                mc.addMarkers(unfilled_markers.concat(filled_markers));
+
                 angular.element(document.getElementById('chart')).scope().$apply(function(scope){
                     scope.dates = dates.map(function(date){
                         return date.substring(5, 10);
@@ -177,7 +192,6 @@ $(function() {
     });
     }
 
-    
     $(document).ajaxSuccess(function() {});
 
     google.maps.event.addListener(map, 'click', function(event) {
@@ -191,18 +205,27 @@ $(function() {
     });
 
 
-
     $("#filled").on('click', function() {
+        // google.maps.event.addListener(marker, function(){
+        //     if ( marker.getVisible() ) {
+        //             mc.addMarker(marker, true);
+        //     } else {
+        //             mc.removeMarker(marker, true);
+        //     }
+        // });
         if ($("#filled").prop("checked")) {
             for (var i = 0; i < filled_markers.length; ++i) {
                 filled_markers[i].setVisible(false);
+                // mc.removeMarker(marker, true);
+                // mc.repaint();
             }
         } else {
             for (var i = 0; i < filled_markers.length; ++i) {
                 filled_markers[i].setVisible(true);
+                // mc.addMarker(marker, true);
+                // mc.repaint();
             }
         }
-
     });
 
     function search(e) {
