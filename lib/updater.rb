@@ -24,10 +24,8 @@ class Updater
         most_recent_action: pothole_record["most_recent_action"]
       }
 
-
       ph = Pothole.find_or_initialize_by(service_request_number: values[:service_request_number])
       ph.update_attributes(values)
-
     end
   end
 end
