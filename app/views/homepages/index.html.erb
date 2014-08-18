@@ -12,10 +12,6 @@
     </form>
 </div>
 
-<div id="chart" ng-app="chartApp" ng-controller="PotHoleChartController">
-    <linechart data="data" options="options" mode=""></linechart>
-</div>
-
 <div id='map-section'>
     <input id="pac-input" class="controls" type="text" placeholder="Find your hole">
     <div class="input-control checkbox">
@@ -28,6 +24,12 @@
     <div id="map-canvas">
     </div>
 </div>
+
+<div id="chart" ng-app="chartApp" ng-controller="PotHoleChartController">
+    <linechart data="data" options="options" mode=""></linechart>
+</div>
+
+
 
 
 

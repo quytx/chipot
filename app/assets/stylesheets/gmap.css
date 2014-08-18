@@ -9,8 +9,8 @@ body {
 }
 
 .metro #map-section { 
-    height: 400px;
-    width: 600px;
+    height: 512px;
+    width: 650px;
     float: right;
     margin-right: 30px;
 }
@@ -27,6 +27,7 @@ body {
 
 #date-range {
   margin-left: 10%;
+  float: left;
 }
 
 
