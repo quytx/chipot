@@ -8,6 +8,7 @@
  * max 480
  * max 320
  */
+
 #responsive-utils .hide-element {
   display: none !important;
   visibility: hidden !important;
@@ -51,6 +52,7 @@
   padding: 0 10px;
 }
 /* Desktop */
+
 @media screen and (min-width: 800px) {
   .no-desktop {
     display: none !important;
@@ -71,6 +73,7 @@
   }
 }
 /* Large desktop */
+
 @media screen and (min-width: 1200px) {
   html {
     font-size: 70%;
@@ -88,6 +91,7 @@
   }
 }
 /* tablet landscape*/
+
 @media only screen and (max-width: 1024px) {
   .no-tablet-landscape,
   .no-tablet {
@@ -103,6 +107,7 @@
   }
 }
 /* tablet portrait */
+
 @media only screen and (max-width: 800px) {
   html {
     font-size: 60%;
@@ -122,12 +127,12 @@
   .grid:not(.fluid) > .row {
     margin: 0;
   }
-  .grid:not(.fluid) > .row > [class*="span"] {
+  .grid:not(.fluid) > .row >[class*="span"] {
     width: 350px !important;
     margin-left: 0 !important;
     margin-bottom: 20px;
   }
-  .grid:not(.fluid) > .row > [class*="span"]:nth-child(even) {
+  .grid:not(.fluid) > .row >[class*="span"]:nth-child(even) {
     margin-left: 20px !important;
   }
   .grid:not(.fluid) > .row .span12,
@@ -149,12 +154,12 @@
   .grid:not(.fluid) > .row .row {
     margin: 0;
   }
-  .grid:not(.fluid) > .row .row [class*="span"] {
+  .grid:not(.fluid) > .row .row[class*="span"] {
     width: 350px !important;
     margin-left: 0 !important;
     margin-bottom: 20px;
   }
-  .grid:not(.fluid) > .row .row [class*="span"]:nth-child(even) {
+  .grid:not(.fluid) > .row .row[class*="span"]:nth-child(even) {
     margin-left: 20px !important;
   }
   .grid:not(.fluid) > .row .row .span12,
@@ -234,6 +239,7 @@
   }
 }
 /* Phones landscape*/
+
 @media only screen and (max-width: 640px) {
   html {
     font-size: 60%;
@@ -254,12 +260,12 @@
   .grid:not(.fluid) > .row {
     margin: 0;
   }
-  .grid:not(.fluid) > .row > [class*="span"] {
+  .grid:not(.fluid) > .row >[class*="span"] {
     width: 100% !important;
     margin: 0 !important;
     margin-bottom: 5px !important;
   }
-  .grid:not(.fluid) > .row > [class*="span"]:nth-child(even) {
+  .grid:not(.fluid) > .row >[class*="span"]:nth-child(even) {
     margin-left: 0 !important;
   }
   .grid:not(.fluid) > .row .span12 {
@@ -268,12 +274,12 @@
   .grid:not(.fluid) > .row .row {
     margin: 0;
   }
-  .grid:not(.fluid) > .row .row > [class*="span"] {
+  .grid:not(.fluid) > .row .row >[class*="span"] {
     width: 100% !important;
     margin: 0 !important;
     margin-bottom: 5px !important;
   }
-  .grid:not(.fluid) > .row .row > [class*="span"]:nth-child(even) {
+  .grid:not(.fluid) > .row .row >[class*="span"]:nth-child(even) {
     margin-left: 0 !important;
   }
   .grid:not(.fluid) > .row .row .span12 {
@@ -281,6 +287,7 @@
   }
 }
 /* Phones portrait*/
+
 @media only screen and (max-width: 480px) {
   html {
     font-size: 45%;
