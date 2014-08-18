@@ -43,6 +43,7 @@ $(function() {
 
 
     var map = initialize(mapOptions);
+    var mc = new MarkerClusterer(map, [], clusterOptions);
 
 
     // Search
@@ -134,6 +135,9 @@ $(function() {
 
     getPotholesByDate = function(startDate, endDate) {
         var dates = getDatesBetween(startDate, endDate);
+            filled_markers = [];
+            unfilled_markers = [];
+            mc.clearMarkers();
 
         $.ajax({
         url: "/potholes.json",
@@ -171,7 +175,8 @@ $(function() {
                     }
                 }
 
-                var mc = new MarkerClusterer(map, unfilled_markers, clusterOptions);
+                // mc = new MarkerClusterer(map, unfilled_markers.concat(filled_markers), clusterOptions);
+                mc.addMarkers(unfilled_markers.concat(filled_markers));
 
                 angular.element(document.getElementById('chart')).scope().$apply(function(scope){
                     scope.dates = dates.map(function(date){
@@ -200,18 +205,27 @@ $(function() {
     });
 
 
-
     $("#filled").on('click', function() {
+        // google.maps.event.addListener(marker, function(){
+        //     if ( marker.getVisible() ) {
+        //             mc.addMarker(marker, true);
+        //     } else {
+        //             mc.removeMarker(marker, true);
+        //     }
+        // });
         if ($("#filled").prop("checked")) {
             for (var i = 0; i < filled_markers.length; ++i) {
                 filled_markers[i].setVisible(false);
+                // mc.removeMarker(marker, true);
+                // mc.repaint();
             }
         } else {
             for (var i = 0; i < filled_markers.length; ++i) {
                 filled_markers[i].setVisible(true);
+                // mc.addMarker(marker, true);
+                // mc.repaint();
             }
         }
-
     });
 
     function search(e) {
