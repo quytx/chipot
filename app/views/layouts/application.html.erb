@@ -8,16 +8,24 @@
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <%= stylesheet_link_tag    'gmap', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'gmap', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'raphael-min', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'json2', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'raphael.sketchpad', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'jquery.browser.min', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     
 </head>
 <body>
+    <div class="draw">
+      <%= render 'partials/draw' %>
+    </div>
+
     <div class="metro">
-        <%= render 'partials/nav' %>
-        
+        <%= render 'partials/nav' %>     
         <%= yield %>
         
     </div>
+    
 </body>
 </html>
