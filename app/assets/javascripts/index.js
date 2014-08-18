@@ -35,7 +35,7 @@ $(function() {
     });
 
     var clusterOptions = {
-        gridSize: 50,
+        gridSize: 70,
         maxZoom: 14
     };
 
@@ -118,6 +118,8 @@ $(function() {
                                       <option value='INTERSEC'>Intersection</option>\
                                       <option value='TRAFFIC'>Traffic Lane</option>\
                                     </select>\
+                                    <label for='activity'>Enter phone # to receive text updates about your request (optional):</label>\
+                                    <input type='text' pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}' name='activity' placeholder='###-###-####'>\
                                     <br>\
                                     <br><input type='submit' value='Submit'>\
                                 </form>"

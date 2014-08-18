@@ -25,9 +25,10 @@ class HomepagesController < ApplicationController
     request.set_form_data({'api_key' => api_key,
                            'service_code'=> '4fd3b656e750846c53000004',
                            'lat' => params["latitude"],
-                           'long'=> params["longitude"],
+                           'long' => params["longitude"],
                            'address_string' => params["address"],
-                           'attribute[WHEREIST]'=> params["attribute"]})
+                           'attribute[WHEREIST]' => params["attribute"],
+                           'activity[A511OPTN]' => params["activity"]})
 
     response = http.request(request)
     msg = response.body
