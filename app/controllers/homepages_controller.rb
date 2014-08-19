@@ -29,7 +29,8 @@ class HomepagesController < ApplicationController
                            'address_string' => params["address"],
                            'description' => params["description"],
                            'attribute[WHEREIST]' => params["attribute"],
-                           'attribute[A511OPTN]' => params["phone"]})
+                           'phone' => params["phone"],
+                           'media_url' => params["mediaUrl"]})
 
     response = http.request(request)
     msg = response.body
