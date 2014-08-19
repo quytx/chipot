@@ -30,7 +30,7 @@ class HomepagesController < ApplicationController
                            'description' => params["description"],
                            'attribute[WHEREIST]' => params["attribute"],
                            'phone' => params["phone"],
-+                          'media_url' => params["mediaUrl"]})
+                           'media_url' => params["mediaUrl"]})
 
     response = http.request(request)
     msg = response.body
