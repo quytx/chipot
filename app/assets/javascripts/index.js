@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 $(function() {
 
 
@@ -24,8 +22,7 @@ $(function() {
 
     startDrawing(sketchPad);
 
-    // ==================
->>>>>>> bc1b1537b85163a25bc10fb19c8fb5c2c0356a1f
+
     var latitude = 41.881487;
     var longitude = -87.631219;
 
@@ -56,10 +53,6 @@ $(function() {
                 report: 0,
                 patch: 0
             });
-<<<<<<< HEAD
-=======
-
->>>>>>> bc1b1537b85163a25bc10fb19c8fb5c2c0356a1f
         }
     }
 
@@ -284,9 +277,4 @@ $(function() {
     };
 
     $("#pac-input").bind("keypress", {}, search);
-
-<<<<<<< HEAD
-    });
-=======
 });
->>>>>>> bc1b1537b85163a25bc10fb19c8fb5c2c0356a1f
