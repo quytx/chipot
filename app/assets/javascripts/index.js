@@ -73,6 +73,44 @@ $(function() {
 
   var mc = new MarkerClusterer(map, [], clusterOptions);
 
+
+
+
+
+  // function MyOverlay(options) {
+  //   this.setValues(options);
+  //   this.markerLayer = $('<div />').addClass('overlay');
+  // }
+
+  // // MyOverlay is derived from google.maps.OverlayView
+  // MyOverlay.prototype = new google.maps.OverlayView();
+
+  // MyOverlay.prototype.onAdd = function() {
+  //   var $pane = $(this.getPanes().overlayImage); // Pane 4
+  //   $pane.append(this.markerLayer);
+  // };
+
+  // MyOverlay.prototype.onRemove = function() {
+  //   this.markerLayer.remove();
+  // };
+
+  // MyOverlay.prototype.draw = function() {
+  //   var projection = this.getProjection();
+  //   var zoom = this.getMap().getZoom();
+  //   var fragment = document.createDocumentFragment();
+
+  //   this.markerLayer.empty(); // Empty any previous rendered markers
+
+  //   // Now append the entire fragment from memory onto the DOM
+  //   this.markerLayer.append(fragment);
+  // };
+
+
+  // var OverlayMap = new MyOverlay({
+  //   map: map
+  // });
+
+
   // Search
   var infowindow = new google.maps.InfoWindow();
   var marker = "";
@@ -168,6 +206,10 @@ $(function() {
     });
   };
 
+
+  var red = new google.maps.MarkerImage("/assets/sprite.png", new google.maps.Size(0, 16), new google.maps.Point(8, 8));
+  var green = new google.maps.MarkerImage("/assets/sprite.png", new google.maps.Size(42, 42), new google.maps.Point(8, 8));
+
   puttingtheMarkers = function(data, dates) {
     if (data === null || data.length === 0) {
       alert("There is no data for this period. Please choose another date");
@@ -184,7 +226,7 @@ $(function() {
           marker = new google.maps.Marker({
             position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
             map: map,
-            icon: '/assets/red_MarkerA.png',
+            icon: red,
             optimized: false
           });
           makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Street Address: " + data[i].street_address, marker);
@@ -193,7 +235,7 @@ $(function() {
           marker = new google.maps.Marker({
             position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
             map: map,
-            icon: '/assets/green_MarkerA.png',
+            icon: green,
             optimized: false
           });
           makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Completed Date: " + data[i].completion_date + "<br>" + "Street Address: " + data[i].street_address, marker);
@@ -213,6 +255,8 @@ $(function() {
       });
     }
   };
+
+
 
   getPotholesByDate = function(startDate, endDate) {
     var dates = getDatesBetween(startDate, endDate);
