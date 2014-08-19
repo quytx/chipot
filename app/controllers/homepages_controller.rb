@@ -38,7 +38,6 @@ class HomepagesController < ApplicationController
     respond_to do |format|
       format.json {
         render :json => {msg: token}
-        # render :json => "#{token.to_json}", :content_type => "text/html"
       }
     end
   end
