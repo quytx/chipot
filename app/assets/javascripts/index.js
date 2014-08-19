@@ -1,3 +1,4 @@
+var sketchPad;
 $(function() {
     $('#start-draw').on('click', function(e) {        
         var size = "size=" + "640x480&";        
@@ -6,7 +7,7 @@ $(function() {
         } else {        
             var pano = "pano=" + map.streetView.location.pano + "&";        
             var heading = "heading=" + map.streetView.pov.heading + "&";        
-            var pitch = "pitch=" + map.streetView.pov.pitch + "&";         // var zoom = "zoom=" + map.streetView.location.pov.zoom + "&";
+            var pitch = "pitch=" + map.streetView.pov.pitch;         // var zoom = "zoom=" + map.streetView.location.pov.zoom + "&";
 
                     
             var url = "http://maps.googleapis.com/maps/api/streetview?" + size + pano + heading + pitch;        
@@ -17,7 +18,7 @@ $(function() {
     });
 
         
-    var sketchPad = createSketchpad();
+    sketchPad = createSketchpad();
 
         
     startDrawing(sketchPad);
