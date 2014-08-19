@@ -3,9 +3,9 @@ $(function() {
 
     $('#start-draw').on('click', function(e) {
         var size = "size=" + "640x480&";
-        // if (map.streetview == null) {
-        //     alert('Please switch to Street View first!');
-        // } else {
+        if (map.streetView.pano == null) {
+            alert('Please switch to Street View first!');
+        } else {
         var pano = "pano=" + map.streetView.location.pano + "&";
         var heading = "heading=" + map.streetView.pov.heading + "&";
         var pitch = "pitch=" + map.streetView.pov.pitch + "&";
@@ -15,7 +15,7 @@ $(function() {
         $('#street-view-image').attr("src", url);
         $('.metro').hide();
         $('.draw').show();
-        // }
+        }
     });
 
     var sketchPad = createSketchpad();
