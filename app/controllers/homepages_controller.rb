@@ -27,8 +27,10 @@ class HomepagesController < ApplicationController
                            'lat' => params["latitude"],
                            'long' => params["longitude"],
                            'address_string' => params["address"],
+                           'description' => params["description"],
                            'attribute[WHEREIST]' => params["attribute"],
-                           'activity[A511OPTN]' => params["activity"]})
+                           'phone' => params["phone"],
++                          'media_url' => params["mediaUrl"]})
 
     response = http.request(request)
     msg = response.body
@@ -36,7 +38,6 @@ class HomepagesController < ApplicationController
     respond_to do |format|
       format.json {
         render :json => {msg: token}
-        # render :json => "#{token.to_json}", :content_type => "text/html"
       }
     end
   end
