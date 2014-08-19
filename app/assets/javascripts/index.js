@@ -207,8 +207,8 @@ $(function() {
   };
 
 
-  var red = new google.maps.MarkerImage("/assets/sprite.png", new google.maps.Size(0, 16), new google.maps.Point(8, 8));
-  var green = new google.maps.MarkerImage("/assets/sprite.png", new google.maps.Size(42, 42), new google.maps.Point(8, 8));
+  var red = new google.maps.MarkerImage("/assets/sprite.png", new google.maps.Size(16, 16), new google.maps.Point(0, 0));
+  var green = new google.maps.MarkerImage("/assets/sprite.png", new google.maps.Size(16, 16), new google.maps.Point(0, 26));
 
   puttingtheMarkers = function(data, dates) {
     if (data === null || data.length === 0) {
@@ -226,8 +226,9 @@ $(function() {
           marker = new google.maps.Marker({
             position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
             map: map,
+            // icon: '/assets/red_MarkerA.png',
             icon: red,
-            optimized: false
+            optimized: true
           });
           makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Street Address: " + data[i].street_address, marker);
           unfilled_markers.push(marker);
@@ -235,8 +236,9 @@ $(function() {
           marker = new google.maps.Marker({
             position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
             map: map,
+            // icon: '/assets/green_MarkerA.png',
             icon: green,
-            optimized: false
+            optimized: true
           });
           makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Completed Date: " + data[i].completion_date + "<br>" + "Street Address: " + data[i].street_address, marker);
           filled_markers.push(marker);
