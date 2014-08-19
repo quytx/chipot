@@ -100,16 +100,16 @@ $(function() {
     }
 
     function makeReportEvent(map, infowindow, event) {
-        var lat = parseFloat(event.latLng.lat());
-        var lng = parseFloat(event.latLng.lng());
-        var latlng = new google.maps.LatLng(lat, lng);
+    var lat = parseFloat(event.latLng.lat());
+    var lng = parseFloat(event.latLng.lng());
+    var latlng = new google.maps.LatLng(lat, lng);
 
-        geocoder.geocode({
-            'latLng': latlng
-        }, function(results, status) {
-            var address = String("'" + results[0].formatted_address + "'");
-            var dropDownForm = "<h4>Submit a report for this location</h4>\
-                                <form id='reportSubmit'>\
+    geocoder.geocode({
+      'latLng': latlng
+    }, function(results, status) {
+      var address = String("'" + results[0].formatted_address + "'");
+      var dropDownForm = "<h4>Submit a report for this location</h4>\
+                                <form id='reportSubmit' enctype='multipart/form-data'>\
                                     <input type='hidden' name='latitude' value=" + lat + ">\
                                     <input type='hidden' name='longitude' value=" + lng + ">\
                                     <input type='hidden' name='address' value=" + address + ">\
@@ -120,38 +120,42 @@ $(function() {
                                       <option value='INTERSEC'>Intersection</option>\
                                       <option value='TRAFFIC'>Traffic Lane</option>\
                                     </select>\
-                                    <label for='activity'>Enter phone # to receive text updates about your request (optional):</label>\
-                                    <input type='text' pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}' name='activity' placeholder='###-###-####'>\
+                                    <label for='description'>Write a description of the pothole below (optional):</label>\
+                                    <textarea name='description' cols='40' rows='4' maxLength='500' placeholder='Description here...'></textarea>\
+                                    <label for='picture'>Upload an image of this pothole (optional):</label>\
+                                    <input type='file' name='picture'>\
+                                    <label for='phone'>Phone # to receive text updates about your request (optional):</label>\
+                                    <input type='text' pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}' name='phone' placeholder='###-###-####'>\
                                     <br>\
                                     <br><input type='submit' value='Submit'>\
                                 </form>"
-            infowindow.setContent(dropDownForm);
-            infowindow.setPosition(event.latLng);
-            infowindow.open(map);
-        });
-    };
 
-    $('#map-canvas').on('submit', '#reportSubmit', function(event) {
-        event.preventDefault();
-        // infowindow.setContent("<img align='center' src=/assets/loading.gif>")
-        infowindow.setContent("<img align='center' src='/assets/loading.gif'>")
-        var form = $(this).serializeArray();
-
-        $.post('/submitReport', form, function(data, textStatus, xhr) {
-            if (xhr.status === 200) {
-                infowindow.setContent("Your request has been submitted");
-                setTimeout(function() {
-                    infowindow.close();
-                }, 3000);
-            } else {
-                infowindow.setContent("Unable to process your request");
-                setTimeout(function() {
-                    infowindow.close();
-                }, 4000);
-            }
-        }, 'json');
-
+      infowindow.setContent(dropDownForm);
+      infowindow.setPosition(event.latLng);
+      infowindow.open(map);
     });
+  };
+
+  $('#map-canvas').on('submit', '#reportSubmit', function(event) {
+    event.preventDefault();
+    infowindow.setContent("<img align='center' src='/assets/loading.gif'>");
+    var form = $(this).serializeArray();
+
+    $.post('/submitReport', form, function(data, textStatus, xhr) {
+      if (xhr.status === 200) {
+        infowindow.setContent("Your request has been submitted");
+        setTimeout(function() {
+          infowindow.close();
+        }, 3000);
+      } else {
+        infowindow.setContent("Unable to process your request");
+        setTimeout(function() {
+          infowindow.close();
+        }, 4000);
+      }
+    }, 'json');
+
+  });
 
     getDatesBetween = function(startDate, endDate) {
         var start = new Date(startDate);
