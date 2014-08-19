@@ -11,7 +11,7 @@ count = 1
 
 
 
-(Date.new(2014,05,01)..Date.new(2014,07,31)).each do |d|
+(Date.new(2014,05,01)..(Date.today-1)).each do |d|
   p d
   d = d.to_s+"T00:00:00"
   response = client.get("7as2-ds3y",{creation_date: "#{d}"})

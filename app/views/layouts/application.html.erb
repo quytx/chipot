@@ -3,10 +3,10 @@
 <head>
   <title>Chicago Pot Holes</title>
 
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= stylesheet_link_tag    'gmap', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'gmap', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'raphael-min', 'data-turbolinks-track' => true %>
@@ -29,7 +29,7 @@
     </div>
 
     <div class="metro">
-        <%= render 'partials/nav' %>     
+        <%= render 'partials/nav' %>
         <%= yield %>
         
     </div>
