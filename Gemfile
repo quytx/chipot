@@ -32,6 +32,8 @@ gem "mini_magick"
 gem 'jquery-ui-rails'
 gem 'angularjs-rails'
 
+#MiniProfiler that displays speed on the page
+gem 'rack-mini-profiler'
 
 #City of Chicago API
 gem 'soda-ruby', require: 'soda/client'

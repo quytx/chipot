@@ -2,7 +2,7 @@ $(function() {
 
   $('#start-draw').on('click', function(e) {        
     var size = "size=" + "640x480&";        
-    if (map.streetView.pano == null) {            
+    if (map.streetView.pano === null) {            
       alert('Please switch to Street View first!');        
     } else {        
       var pano = "pano=" + map.streetView.location.pano + "&";        
@@ -41,7 +41,7 @@ $(function() {
 
   convertToX = function(date, dates) {
     return dates.indexOf(date);
-  }
+  };
 
   resetChart = function(numDates) {
     chartData = [];
@@ -52,7 +52,7 @@ $(function() {
         patch: 0
       });
     }
-  }
+  };
 
   insertData = function(hole, data, dates) {
     completeX = convertToX(hole.completion_date, dates);
@@ -66,7 +66,7 @@ $(function() {
       numCreate = ++data[createdX].report;
     }
     return [numCreate, numComplete];
-  }
+  };
 
 
   var map = initialize(mapOptions);
@@ -131,7 +131,7 @@ $(function() {
       infowindow.setPosition(event.latLng);
       infowindow.open(map);
     });
-  };
+  }
 
   $('#map-canvas').on('submit', '#reportSubmit', function(event) {
     event.preventDefault();
@@ -166,7 +166,53 @@ $(function() {
     return between.map(function(date) {
       return date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
     });
-  }
+  };
+
+  puttingtheMarkers = function(data, dates) {
+    if (data === null || data.length === 0) {
+      alert("There is no data for this period. Please choose another date");
+    } else {
+      clearMarkers();
+      resetChart(dates.length);
+      var yMax = 0;
+      var y2Max = 0;
+      for (var i = 0; i < data.length; i++) {
+        var counts = insertData(data[i], chartData, dates);
+        yMax = Math.max(yMax, counts[0]);
+        y2Max = Math.max(y2Max, counts[1]);
+        if (data[i].completion_date === null) {
+          marker = new google.maps.Marker({
+            position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
+            map: map,
+            icon: '/assets/red_MarkerA.png',
+            optimized: false
+          });
+          makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Street Address: " + data[i].street_address, marker);
+          unfilled_markers.push(marker);
+        } else {
+          marker = new google.maps.Marker({
+            position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
+            map: map,
+            icon: '/assets/green_MarkerA.png',
+            optimized: false
+          });
+          makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Completed Date: " + data[i].completion_date + "<br>" + "Street Address: " + data[i].street_address, marker);
+          filled_markers.push(marker);
+        }
+      }
+
+      mc.addMarkers(unfilled_markers.concat(filled_markers));
+
+      angular.element(document.getElementById('chart')).scope().$apply(function(scope) {
+        scope.dates = dates.map(function(date) {
+          return date.substring(5, 10);
+        });
+        scope.options.axes.y.max = Math.max(yMax, y2Max);
+        scope.options.axes.y2.max = Math.max(yMax, y2Max);
+        scope.data = chartData;
+      });
+    }
+  };
 
   getPotholesByDate = function(startDate, endDate) {
     var dates = getDatesBetween(startDate, endDate);
@@ -180,55 +226,13 @@ $(function() {
         all_dates: dates
       },
       success: function(data) {
-        if (data == null || data.length == 0) {
-          alert("There is no data for this period. Please choose another date");
-        } else {
-          clearMarkers();
-          resetChart(dates.length);
-          var yMax = 0;
-          var y2Max = 0;
-          for (var i = 0; i < data.length; i++) {
-            var counts = insertData(data[i], chartData, dates);
-            yMax = Math.max(yMax, counts[0]);
-            y2Max = Math.max(y2Max, counts[1]);
-            if (data[i].completion_date === null) {
-              marker = new google.maps.Marker({
-                position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
-                map: map,
-                icon: '/assets/red_MarkerA.png',
-                optimized: false
-              });
-              makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Street Address: " + data[i].street_address, marker);
-              unfilled_markers.push(marker);
-            } else {
-              marker = new google.maps.Marker({
-                position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
-                map: map,
-                icon: '/assets/green_MarkerA.png',
-                optimized: false
-              });
-              makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Completed Date: " + data[i].completion_date + "<br>" + "Street Address: " + data[i].street_address, marker);
-              filled_markers.push(marker);
-            }
-          }
-
-          mc.addMarkers(unfilled_markers.concat(filled_markers));
-
-          angular.element(document.getElementById('chart')).scope().$apply(function(scope) {
-            scope.dates = dates.map(function(date) {
-              return date.substring(5, 10);
-            });
-            scope.options.axes.y.max = Math.max(yMax, y2Max);
-            scope.options.axes.y2.max = Math.max(yMax, y2Max);
-            scope.data = chartData;
-          });
-        }
+        puttingtheMarkers(data, dates);
       },
       dataType: "json"
     });
-  }
+  };
 
-  $(document).ajaxSuccess(function() {});
+
 
   google.maps.event.addListener(map, 'click', function(event) {
     infowindow.close();
