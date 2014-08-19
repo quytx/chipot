@@ -25,5 +25,20 @@
     z-index: 1030;
 }
 
+#newCanvas {
+    display: none;
+}
+
+#saveImage {
+    position: fixed;
+    top: 700px;
+    height: 480px;
+    width: 640px;
+    display: none;
+}
+
+#layer2 {
+    display: none;
+}
 
 
