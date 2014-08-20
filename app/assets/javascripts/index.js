@@ -108,7 +108,8 @@ $(function() {
     }, function(results, status) {
       var address = String("'" + results[0].formatted_address + "'");
       var csrfToken = $('meta[name="csrf-token"]').attr('content');
-      var dropDownForm = "<h4>Submit a report for this location</h4>\
+      var dropDownForm = "<h4>Submit a report for the following address:</h4>\
+                <p>" + results[0].formatted_address + "</p>\
                 <form action='/upload' class='new_photo' id='new_photo' method='POST' enctype='multipart/form-data'>\
                   <input type='hidden' value=" + csrfToken + " name='authenticity_token'>\
                   <label for='photo_url'>Upload an image of this pothole (optional):</label>\
@@ -120,7 +121,7 @@ $(function() {
                   <input type='hidden' name='latitude' value=" + lat + ">\
                   <input type='hidden' name='longitude' value=" + lng + ">\
                   <input type='hidden' name='address' value=" + address + ">\
-                  <label for='attribute'>Where is the pothole located? </label>\
+                  <label for='attribute'>Where is the pothole located? <span style='color: red'>*</span></label>\
                   <select name='attribute'>\
                     <option value='CURB'>Curb Lane</option>\
                     <option value='CROSS'>Crosswalk</option>\
