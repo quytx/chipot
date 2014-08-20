@@ -41,6 +41,25 @@ class HomepagesController < ApplicationController
       }
     end
   end
+  
+  def uploadToS3
+    @photo = Photo.new(photo_params)
+    respond_to do |format|
+      if @photo.save
+        format.html 
+        format.json { render :json => { url: @photo.url.medium } }
+      else
+        format.html 
+        format.json { render :json => { url: 'none'} }
+      end
+    end
+  end
+  
+  private
+
+  def photo_params
+      params.require(:photo).permit(:url)
+  end
 
 
 end
