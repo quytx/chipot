@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get '/report' => 'homepages#renderReport'
 
   post '/submitReport' => 'homepages#submitReport'
+  
+  post '/upload' => 'homepages#uploadToS3'
 
   resources :users
   # The priority is based upon order of creation: first created -> highest priority.
