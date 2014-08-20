@@ -1,3 +1,4 @@
+var lastInfowindow;
 $(function() {
 
     $('#start-draw').on('click', function(e) {
@@ -35,6 +36,7 @@ $(function() {
 
   var chartData;
   var dates;
+  var infoWindowPos;
 
   convertToX = function(date, dates) {
     return dates.indexOf(date);
@@ -82,6 +84,7 @@ $(function() {
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.setContent(contentString);
       infowindow.open(map, marker);
+      lastInfowindow = infowindow;
     });
   };
 
@@ -98,6 +101,7 @@ $(function() {
     var lat = parseFloat(event.latLng.lat());
     var lng = parseFloat(event.latLng.lng());
     var latlng = new google.maps.LatLng(lat, lng);
+    infoWindowPos = latlng;
 
     geocoder.geocode({
       'latLng': latlng
@@ -111,6 +115,7 @@ $(function() {
                   <input id='photo_url' type='file' name='photo[url]'>\
                   <input id='upload-button' name='commit' type='submit' value='Upload'>\
                 </form>\
+                Dont' have a photo? <button id='get-draw'>Draw markup</button>\
                 <form id='reportSubmit' enctype='multipart/form-data'>\
                   <input type='hidden' name='latitude' value=" + lat + ">\
                   <input type='hidden' name='longitude' value=" + lng + ">\
@@ -129,12 +134,26 @@ $(function() {
                   <br>\
                   <br><input type='submit' value='Submit'>\
                 </form>"
-
       infowindow.setContent(dropDownForm);
       infowindow.setPosition(event.latLng);
       infowindow.open(map);
+      lastInfowindow = infowindow;
     });
   };
+
+  $('#map-canvas').on('click', '#get-draw', function(event) {
+      infowindow.close();
+      var panoramaOptions = {
+        position: infoWindowPos,
+        pov: {
+          heading: 0,
+          pitch: 0
+        }
+      }
+      var panorama = new google.maps.StreetViewPanorama(document.getElementById("map-canvas"), panoramaOptions);
+      map.setStreetView(panorama);
+      $('#start-draw').show();
+  });
   
   
   
