@@ -27,6 +27,8 @@
 </div>
 
 <div id="chart" ng-app="chartApp" ng-controller="PotHoleChartController">
+    <div class="average">Average number of pot holes reported per day: <span id="avg-report"></span></div>
+    <div class="average">Average number of pot holes patched per day: <span id="avg-patch"></span></div>
     <linechart data="data" options="options" mode=""></linechart>
 </div>
 
