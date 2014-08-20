@@ -1,9 +1,19 @@
 class HomepagesController < ApplicationController
   def index
+    puts "************************ In Index ***************************"
+    temp = Pothole.all.group_by(&:creation_date)
+    temp.each do |hole|
+      Rails.cache.write hole[0], hole[1]
+    end
   end
 
   def getPotholes
-    @holes = Pothole.where('"potholes"."creation_date" IN (?) OR "potholes"."creation_date" IN (?)', params[:all_dates], params[:all_dates])
+    # @holes = Pothole.where('"potholes"."creation_date" IN (?)', params[:all_dates])
+    @holes = []
+    params[:all_dates].each do |date|
+      @holes.push(Rails.cache.read date)
+    end
+    @holes.flatten!
     respond_to do |format|
       format.html
       format.json { render :json => @holes }

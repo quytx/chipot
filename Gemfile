@@ -32,6 +32,9 @@ gem "mini_magick"
 gem 'jquery-ui-rails'
 gem 'angularjs-rails'
 
+#Memcache Dalli
+gem 'dalli'
+
 #MiniProfiler that displays speed on the page
 gem 'rack-mini-profiler'
 

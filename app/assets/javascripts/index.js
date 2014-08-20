@@ -30,7 +30,7 @@ $(function() {
     zoom: 12
   };
 
-  // Set options for cluster map
+  // Set options for marker clusterer map
   var clusterOptions = {
     gridSize: 70,
     maxZoom: 14
@@ -206,11 +206,12 @@ $(function() {
     });
   };
 
-
+  //Using sprites
   var red = new google.maps.MarkerImage("/assets/sprite.png", new google.maps.Size(16, 16), new google.maps.Point(0, 0));
   var green = new google.maps.MarkerImage("/assets/sprite.png", new google.maps.Size(16, 16), new google.maps.Point(0, 26));
 
   puttingtheMarkers = function(data, dates) {
+    console.log(data);
     if (data === null || data.length === 0) {
       alert("There is no data for this period. Please choose another date");
     } else {
@@ -280,10 +281,25 @@ $(function() {
 
 
 
+  // Remove all markers from map if you zoom out too far, put them back when zoomed back in
+  // google.maps.event.addListener(map, 'zoom_changed', function(){
+  //   if (map.zoom < 7) {
+  //     mc.clearMarkers();
+  //   } else if (map.zoom >= 7 && mc.a.length === 0) {
+  //     mc.addMarkers(unfilled_markers.concat(filled_markers));
+  //   }
+  // });
+
+  // Open report form when map is clicked if zoomed in far enough
+  // If report form is already open, close it on next map click
   google.maps.event.addListener(map, 'click', function(event) {
-    infowindow.close();
-    if (map.zoom > 14) {
+    if (map.zoom > 14 && infowindow.getContent()) {
+      infowindow.close();
+      infowindow.setContent("");
+    } else if (map.zoom > 14) {
       makeReportEvent(map, infowindow, event);
+    } else {
+      infowindow.close();
     }
   });
 

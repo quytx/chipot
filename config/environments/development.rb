@@ -1,4 +1,5 @@
 Rails.application.configure do
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
@@ -34,4 +35,6 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+  config.cache_store = :dalli_store
+
 end
