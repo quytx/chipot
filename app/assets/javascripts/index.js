@@ -75,7 +75,8 @@ $(function() {
   var map = initialize(mapOptions);
 
   var mc = new MarkerClusterer(map, [], clusterOptions);
-
+    
+  var photoURL;        
   // Search
   var infowindow = new google.maps.InfoWindow();
   var marker = "";
@@ -109,6 +110,12 @@ $(function() {
     }, function(results, status) {
       var address = String("'" + results[0].formatted_address + "'");
       var dropDownForm = "<h4>Submit a report for this location</h4>\
+                <form action='/upload' class='new_photo' id='new_photo' method='POST' enctype='multipart/form-data'>\
+                  <input type='hidden' value=" + csrfToken + " name='authenticity_token'>\
+                  <label for='photo_url'>Upload an image of this pothole (optional):</label>\
+                  <input id='photo_url' type='file' name='photo[url]'>\
+                  <input id='upload-button' name='commit' type='submit' value='Upload'>\
+                </form>\
                 <form id='reportSubmit' enctype='multipart/form-data'>\
                   <input type='hidden' name='latitude' value=" + lat + ">\
                   <input type='hidden' name='longitude' value=" + lng + ">\
@@ -122,8 +129,6 @@ $(function() {
                   </select>\
                   <label for='description'>Write a description of the pothole below (optional):</label>\
                   <textarea name='description' cols='40' rows='4' maxLength='500' placeholder='Description here...'></textarea>\
-                  <label for='picture'>Upload an image of this pothole (optional):</label>\
-                  <input type='file' name='picture'>\
                   <label for='phone'>Phone # to receive text updates about your request (optional):</label>\
                   <input type='text' pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}' name='phone' placeholder='###-###-####'>\
                   <br>\
@@ -135,26 +140,72 @@ $(function() {
       infowindow.open(map);
     });
   };
+  
+  
+  
+  // ================================ Photo upload ====================================
+  $('#map-canvas').on('submit', '#new_photo', function(event) { 
+    var photoForm = document.getElementById('new_photo');
+    var fileSelect = document.getElementById('photo_url');
+    var uploadButton = $('#upload-button');
 
+    event.preventDefault();
+
+    // Update button text.
+    uploadButton.val('Uploading...');
+
+    // Create a new FormData object.
+    var formData = new FormData(photoForm);
+    
+    // Set up the request.
+    var xhr = new XMLHttpRequest();  
+
+    // Open the connection.
+    xhr.open('POST', '/upload.json', true);
+
+    xhr.onload = function(e) {
+      photoURL = JSON.parse(xhr.responseText).url.url.url;
+      if (photoURL) {
+        // File(s) uploaded.
+        uploadButton.val('Included');
+      } else {
+        alert('An error occurred!');
+      }
+    }
+
+    // Send the Data.
+    xhr.send(formData);
+  });
+
+  // ================================ End photo upload ====================================
+
+  // report submit
   $('#map-canvas').on('submit', '#reportSubmit', function(event) {
     event.preventDefault();
-    infowindow.setContent("<img align='center' src='/assets/loading.gif'>");
+    // infowindow.setContent("<img align='center' src='/assets/loading.gif'>");
     var form = $(this).serializeArray();
+    if (photoURL) {
+      form.push({name: "mediaUrl", value: photoURL});
+    }
+
+    infowindow.setContent("Your request has been submitted");
+    setTimeout(function() {
+      infowindow.close();
+    }, 3000);
 
     $.post('/submitReport', form, function(data, textStatus, xhr) {
-      if (xhr.status === 200) {
-        infowindow.setContent("Your request has been submitted");
-        setTimeout(function() {
-          infowindow.close();
-        }, 3000);
-      } else {
-        infowindow.setContent("Unable to process your request");
-        setTimeout(function() {
-          infowindow.close();
-        }, 4000);
-      }
+      // if (xhr.status === 200) {
+      //   infowindow.setContent("Your request has been submitted");
+      //   setTimeout(function() {
+      //     infowindow.close();
+      //   }, 3000);
+      // } else {
+      //   infowindow.setContent("Unable to process your request");
+      //   setTimeout(function() {
+      //     infowindow.close();
+      //   }, 4000);
+      // }
     }, 'json');
-
   });
 
   getDatesBetween = function(startDate, endDate) {
