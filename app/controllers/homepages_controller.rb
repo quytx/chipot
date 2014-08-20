@@ -1,4 +1,6 @@
 class HomepagesController < ApplicationController
+  respond_to :json
+
   def index
     puts "************************ In Index ***************************"
     temp = Pothole.all.group_by(&:creation_date)
@@ -8,25 +10,16 @@ class HomepagesController < ApplicationController
   end
 
   def getPotholes
-    # @holes = Pothole.where('"potholes"."creation_date" IN (?)', params[:all_dates])
-    @holes = []
-    params[:all_dates].each do |date|
-      @holes.push(Rails.cache.read date)
-    end
-    @holes.flatten!
-    respond_to do |format|
-      format.html
-      format.json { render :json => @holes }
-    end
+    potholes = Hash[params[:all_dates].map do |date|
+      [date, Rails.cache.read(date)]
+    end]
+    respond_with potholes
   end
-
 
   def renderReport
   end
 
   def submitReport
-
-
     uri = URI.parse('http://test311request.cityofchicago.org/open311/v2/requests.json')
     api_key = ENV["open311_key"]
 
@@ -51,6 +44,4 @@ class HomepagesController < ApplicationController
       }
     end
   end
-
-
 end
