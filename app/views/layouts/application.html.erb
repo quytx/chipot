@@ -18,6 +18,13 @@
   <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script> 
   <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/StackBlur.js"></script>
   <%= javascript_include_tag 'canvg', 'data-turbolinks-track' => true %>
+
+  <%= javascript_include_tag 'chart', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'chart', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'line-chart.min', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'markerclusterer-compiled', 'data-turbolinks-track' => true %>
+
+
   <%= csrf_meta_tags %>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
   <%= favicon_link_tag 'favicon.ico' %>
