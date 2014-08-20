@@ -3,7 +3,7 @@ class HomepagesController < ApplicationController
     puts "************************ In Index ***************************"
     temp = Pothole.all.group_by(&:creation_date)
     temp.each do |hole|
-      Rails.cache.write hole[0], hole[1]
+      Rails.cache.write hole[0], hole[1].to_json
     end
   end
 
