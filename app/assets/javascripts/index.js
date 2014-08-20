@@ -14,9 +14,7 @@ $(function() {
             $('.draw').show();
         }
     });
- 
     var sketchPad = createSketchpad();
-
     startDrawing(sketchPad);
 
     // Default lat and long for map on load
@@ -140,14 +138,14 @@ $(function() {
   
   
   
+ 
+  var photoURL;
   // ================================ Photo upload ====================================
   $('#map-canvas').on('submit', '#new_photo', function(event) { 
     var photoForm = document.getElementById('new_photo');
     var fileSelect = document.getElementById('photo_url');
     var uploadButton = $('#upload-button');
-
     event.preventDefault();
-
     // Update button text.
     uploadButton.val('Uploading...');
 
@@ -184,7 +182,6 @@ $(function() {
     if (photoURL) {
       form.push({name: "mediaUrl", value: photoURL});
     }
-
     infowindow.setContent("Your request has been submitted");
     setTimeout(function() {
       infowindow.close();
