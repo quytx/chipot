@@ -58,6 +58,9 @@ startDrawing = function(pad) {
         $('.metro').show();
         $('.draw').hide();
         $('#saveImage').show();
-        $('#layer2').show();    
+        $('#layer2').show();
+        map.streetView.setVisible(false);
+        lastInfowindow.open(map);
+        $('#start-draw').hide();   
     });
 }

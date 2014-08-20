@@ -25,6 +25,10 @@
     z-index: 1030;
 }
 
+#start-draw {
+    display: none;
+}
+
 #newCanvas {
     display: none;
 }
