@@ -1,45 +1,47 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Chicago Pot Holes</title>
+  <head>
+    <title>Chicago Pot Holes</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <%= favicon_link_tag 'favicon.ico' %>
 
-  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
-  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= stylesheet_link_tag    'gmap', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'gmap', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'raphael-min', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'json2', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'raphael.sketchpad', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'jquery.browser.min', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'canvas2img', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'base64', 'data-turbolinks-track' => true %>
-  <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script> 
-  <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/StackBlur.js"></script>
-  <%= javascript_include_tag 'canvg', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-  <%= favicon_link_tag 'favicon.ico' %>
-    
-</head>
-<body>
-    <div class="draw">
-      <%= render 'partials/draw' %>
-    </div>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'gmap', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'raphael-min', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'json2', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'raphael.sketchpad', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'jquery.browser.min', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'canvas2img', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'base64', 'data-turbolinks-track' => true %>
+    <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script>
+    <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/StackBlur.js"></script>
+    <%= javascript_include_tag 'canvg', 'data-turbolinks-track' => true %>
 
-    <div class="metro">
-        <%= render 'partials/nav' %>
-        <%= yield %>
-        
-    </div>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag    'gmap', media: 'all', 'data-turbolinks-track' => true %>
 
-    <div id="saveImage" style="position: relative;">
-     <canvas id="newCanvas" width="640px" height="480px" 
-       style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
-     <canvas id="layer2" width="640px" height="480px" 
-       style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
-    </div>
-    
-</body>
+    <%= csrf_meta_tags %>
+  </head>
+
+  <body>
+      <div class="draw">
+        <%= render 'partials/draw' %>
+      </div>
+
+      <div class="metro">
+          <%= render 'partials/nav' %>
+          <%= yield %>
+
+      </div>
+
+      <div id="saveImage" style="position: relative;">
+       <canvas id="newCanvas" width="640px" height="480px"
+         style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+       <canvas id="layer2" width="640px" height="480px"
+         style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+      </div>
+
+  </body>
 </html>
