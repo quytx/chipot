@@ -109,6 +109,7 @@ $(function() {
       'latLng': latlng
     }, function(results, status) {
       var address = String("'" + results[0].formatted_address + "'");
+      var csrfToken = $('meta[name="csrf-token"]').attr('content');
       var dropDownForm = "<h4>Submit a report for this location</h4>\
                 <form action='/upload' class='new_photo' id='new_photo' method='POST' enctype='multipart/form-data'>\
                   <input type='hidden' value=" + csrfToken + " name='authenticity_token'>\
