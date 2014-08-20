@@ -256,12 +256,16 @@ $(function() {
 
     var options = {
       map: map,
-      position: new google.maps.LatLng(60, 105),
+      zoom: 12,
+      position: new google.maps.LatLng(41.881487, -87.631219),
       content: content
     };
 
     var infowindow = new google.maps.InfoWindow(options);
     map.setCenter(options.position);
+    setTimeout(function() {
+      infowindow.close();
+    }, 3000);
   }
 
   //geting location is ending here
