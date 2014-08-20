@@ -324,7 +324,7 @@ $(function() {
                 icon: '/assets/green_MarkerA.png',
                 optimized: true
               });
-              makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Completed Date: " + data[i].completion_date + "<br>" + "Street Address: " + data[i].street_address, marker);
+              makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Patched on: " + data[i].completion_date + "<br>" + "Street Address: " + data[i].street_address, marker);
               filled_markers.push(marker);
             }
           }
