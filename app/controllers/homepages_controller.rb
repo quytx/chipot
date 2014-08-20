@@ -3,7 +3,7 @@ class HomepagesController < ApplicationController
   end
 
   def getPotholes
-    @holes = Pothole.where('"potholes"."creation_date" IN (?) OR "potholes"."creation_date" IN (?)', params[:all_dates], params[:all_dates])
+    @holes = Pothole.where('"potholes"."creation_date" IN (?) OR "potholes"."completion_date" IN (?)', params[:all_dates], params[:all_dates])
     respond_to do |format|
       format.html
       format.json { render :json => @holes }
