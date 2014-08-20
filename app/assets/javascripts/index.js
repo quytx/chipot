@@ -1,25 +1,20 @@
 $(function() {
 
-    $('#start-draw').on('click', function(e) {        
-        var size = "size=" + "640x480&";        
-        if (map.streetView.pano == null) {            
-            alert('Please switch to Street View first!');        
-        } else {        
-            var pano = "pano=" + map.streetView.location.pano + "&";        
-            var heading = "heading=" + map.streetView.pov.heading + "&";        
-            var pitch = "pitch=" + map.streetView.pov.pitch;         // var zoom = "zoom=" + map.streetView.location.pov.zoom + "&";
-
-                    
-            var url = "http://maps.googleapis.com/maps/api/streetview?" + size + pano + heading + pitch;        
-            $('#street-view-image').attr("src", url);        
-            $('.metro').hide();        
-            $('.draw').show();        
-        }    
+    $('#start-draw').on('click', function(e) {
+        var size = "size=" + "640x480&";
+        if (map.streetView.pano == null) {
+            alert('Please switch to Street View first!');
+        } else {
+            var pano = "pano=" + map.streetView.location.pano + "&";
+            var heading = "heading=" + map.streetView.pov.heading + "&";
+            var pitch = "pitch=" + map.streetView.pov.pitch;
+            var url = "http://maps.googleapis.com/maps/api/streetview?" + size + pano + heading + pitch;
+            $('#street-view-image').attr("src", url);
+            $('.metro').hide();
+            $('.draw').show();
+        }
     });
- 
     var sketchPad = createSketchpad();
-
-        
     startDrawing(sketchPad);
 
     // Default lat and long for map on load
@@ -74,7 +69,8 @@ $(function() {
   var map = initialize(mapOptions);
 
   var mc = new MarkerClusterer(map, [], clusterOptions);
-
+    
+  var photoURL;        
   // Search
   var infowindow = new google.maps.InfoWindow();
   var marker = "";
@@ -108,7 +104,6 @@ $(function() {
     }, function(results, status) {
       var address = String("'" + results[0].formatted_address + "'");
       var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
       var dropDownForm = "<h4>Submit a report for this location</h4>\
                 <form action='/upload' class='new_photo' id='new_photo' method='POST' enctype='multipart/form-data'>\
                   <input type='hidden' value=" + csrfToken + " name='authenticity_token'>\
@@ -140,16 +135,17 @@ $(function() {
       infowindow.open(map);
     });
   };
-
+  
+  
+  
+ 
   var photoURL;
   // ================================ Photo upload ====================================
   $('#map-canvas').on('submit', '#new_photo', function(event) { 
     var photoForm = document.getElementById('new_photo');
     var fileSelect = document.getElementById('photo_url');
     var uploadButton = $('#upload-button');
-
     event.preventDefault();
-
     // Update button text.
     uploadButton.val('Uploading...');
 
@@ -182,12 +178,10 @@ $(function() {
   $('#map-canvas').on('submit', '#reportSubmit', function(event) {
     event.preventDefault();
     // infowindow.setContent("<img align='center' src='/assets/loading.gif'>");
-
     var form = $(this).serializeArray();
     if (photoURL) {
       form.push({name: "mediaUrl", value: photoURL});
     }
-
     infowindow.setContent("Your request has been submitted");
     setTimeout(function() {
       infowindow.close();
@@ -206,11 +200,6 @@ $(function() {
       //   }, 4000);
       // }
     }, 'json');
-
-
-
-
-
   });
 
   getDatesBetween = function(startDate, endDate) {

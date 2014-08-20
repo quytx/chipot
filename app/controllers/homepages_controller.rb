@@ -59,7 +59,5 @@ class HomepagesController < ApplicationController
 
   def photo_params
       params.require(:photo).permit(:url)
-    end
-
-
+  end
 end
