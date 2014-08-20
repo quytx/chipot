@@ -212,6 +212,15 @@ $(function() {
 
   puttingtheMarkers = function(data, dates) {
     console.log(data);
+    temp = []
+    for (key in data) {
+      if (data.hasOwnProperty(key)) {
+        var val = data[key];
+        temp.push(val);
+      }
+    }
+    console.log(temp);
+
     if (data === null || data.length === 0) {
       alert("There is no data for this period. Please choose another date");
     } else {
