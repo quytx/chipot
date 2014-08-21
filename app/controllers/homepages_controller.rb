@@ -1,17 +1,17 @@
 class HomepagesController < ApplicationController
   respond_to :json
 
-  def index
-    puts "************************ In Index ***************************"
-    temp = Pothole.all.group_by(&:creation_date)
-    temp.each do |hole|
-      Rails.cache.write hole[0], hole[1].to_json
-    end
-  end
+  # def index
+  #   puts "************************ In Index ***************************"
+  #   temp = Pothole.all.group_by(&:creation_date)
+  #   temp.each do |hole|
+  #     Rails.cache.write hole[0], hole[1].to_json
+  #   end
+  # end
 
   def getPotholes
     potholes = Hash[params[:all_dates].map do |date|
-      [date, Rails.cache.read(date)]
+                      [date, Rails.cache.read(date)]
     end]
     respond_with potholes
   end

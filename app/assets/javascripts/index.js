@@ -220,6 +220,9 @@ $(function() {
       }
     }
     console.log(temp);
+    var merged = [];
+    merged = merged.concat.apply(merged, temp);
+    data = merged;
 
     if (data === null || data.length === 0) {
       alert("There is no data for this period. Please choose another date");
