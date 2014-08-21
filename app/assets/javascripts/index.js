@@ -55,7 +55,9 @@ $(function() {
   };
 
   insertData = function(hole, data, dates) {
-    completeX = convertToX(hole.completion_date, dates);
+    if (hole.completion_date !== null) {
+      completeX = convertToX(hole.completion_date, dates);
+    }
     createdX = convertToX(hole.creation_date, dates);
     var numComplete = 0;
     var numCreate = 0;
@@ -212,7 +214,7 @@ $(function() {
 
   puttingtheMarkers = function(data, dates) {
     console.log(data);
-    temp = []
+    temp = [];
     for (key in data) {
       if (data.hasOwnProperty(key)) {
         var val = data[key];
@@ -223,6 +225,7 @@ $(function() {
     var merged = [];
     merged = merged.concat.apply(merged, temp);
     data = merged;
+    console.log(data);
 
     if (data === null || data.length === 0) {
       alert("There is no data for this period. Please choose another date");

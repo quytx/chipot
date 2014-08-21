@@ -10,32 +10,47 @@ count = 1
 # d = datey.to_s+"T00:00:00"
 
 
-
-(Date.new(2014,8,1)..(Date.today-1)).each do |d|
-  p d
-  d = d.to_s+"T00:00:00"
-  response = client.get("7as2-ds3y",{creation_date: "#{d}"})
-  response.each do |element|
-    element = element.to_hash
-    values = {
-      creation_date: element["creation_date"],
-      completion_date: element["completion_date"],
-      status: element["status"],
-      street_address: element["street_address"],
-      zip: element["zip"],
-      latitude: element["latitude"],
-      longitude: element["longitude"],
-      service_request_number: element["service_request_number"],
-      current_activity: element["current_activity"],
-      most_recent_action: element["most_recent_action"]
-    }
-
-    Pothole.create(values)
+class Seeder
+  def self.seed
+    (DateTime.new(2014,5,1).to_date..(DateTime.yesterday)).each do |d|
+      p d.midnight
+      response = get_data(d.midnight)
+      response.each do |record|
+        Pothole.create(to_attrs(record).to_hash)
+      end
+      cache_write
+    end
   end
-  count +=1
 
-  temp = Pothole.all.group_by(&:creation_date)
-  temp.each do |hole|
-    Rails.cache.write hole[0], hole[1].map(&:attributes)
+
+  protected
+
+  def cache_write
+    temp = Pothole.all.group_by(&:creation_date)
+    temp.each do |hole|
+      Rails.cache.write hole[0], hole[1].map(&:attributes)
+    end
   end
+
+  def self.to_attrs(pothole)
+    pothole.slice(:creation_date, :completion_date, :status, :street_address,
+                  :service_request_number, :zip, :latitude, :longitude,
+                  :current_activity, :most_recent_action)
+  end
+
+  def self.client
+    @client ||= SODA::Client.new({:domain => "data.cityofchicago.org"})
+  end
+
+  def self.get_data(datetime)
+    client.get("7as2-ds3y", { creation_date: to_weird_date(datetime) })
+  end
+
+  def self.to_weird_date(datetime)
+    datetime.strftime("%Y-%m-%dT%H:%M:%S")
+  end
+
 end
+
+
+Seeder.seed
