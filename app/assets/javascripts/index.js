@@ -202,9 +202,9 @@ $(function() {
     if (photoURL) {
       form.push({name: "mediaUrl", value: photoURL});
     }
-    
     infowindow.setContent("Your request has been submitted");
     setTimeout(function() {
+      photoURL = null;
       infowindow.close();
     }, 3000);
 
