@@ -312,9 +312,6 @@ $(function() {
     });
   };
 
-  //Using sprites
-  var red = new google.maps.MarkerImage("/assets/sprite.png", new google.maps.Size(16, 16), new google.maps.Point(0, 0));
-  var green = new google.maps.MarkerImage("/assets/sprite.png", new google.maps.Size(16, 16), new google.maps.Point(0, 26));
 
   puttingtheMarkers = function(data, dates) {
     temp = [];
@@ -329,9 +326,8 @@ $(function() {
     var merged = [];
     merged = merged.concat.apply(merged, temp);
     data = merged;
-
-    if (data === null || data.length === 0) {
-      alert("There is no data for this period. Please choose another date");
+    if (data == null || data.length == 0) {
+      alert("There is no data for this period. Please choose another date.");
     } else {
       clearMarkers();
       resetChart(dates.length);
@@ -345,8 +341,7 @@ $(function() {
           marker = new google.maps.Marker({
             position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
             map: map,
-            // icon: '/assets/red_MarkerA.png',
-            icon: red,
+            icon: '/assets/red_MarkerA.png',
             optimized: true
           });
           makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Street Address: " + data[i].street_address, marker);
@@ -355,11 +350,10 @@ $(function() {
           marker = new google.maps.Marker({
             position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
             map: map,
-            // icon: '/assets/green_MarkerA.png',
-            icon: green,
+            icon: '/assets/green_MarkerA.png',
             optimized: true
           });
-          makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Completed Date: " + data[i].completion_date + "<br>" + "Street Address: " + data[i].street_address, marker);
+          makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Patched on: " + data[i].completion_date + "<br>" + "Street Address: " + data[i].street_address, marker);
           filled_markers.push(marker);
         }
       }
@@ -373,6 +367,8 @@ $(function() {
         scope.options.axes.y.max = Math.max(yMax, y2Max);
         scope.options.axes.y2.max = Math.max(yMax, y2Max);
         scope.data = chartData;
+        $('#avg-report').html("" + unfilled_markers.length / dates.length);
+        $('#avg-patch').html("" + filled_markers.length / dates.length);
       });
     }
   };
@@ -420,51 +416,7 @@ $(function() {
       success: function(data) {
         $(".spinner").remove();
         puttingtheMarkers(data, dates);
-        if (data == null || data.length == 0) {
-          alert("There is no data for this period. Please choose another date.");
-        } else {
-          clearMarkers();
-          resetChart(dates.length);
-          var yMax = 0;
-          var y2Max = 0;
-          for (var i = 0; i < data.length; i++) {
-            var counts = insertData(data[i], chartData, dates);
-            yMax = Math.max(yMax, counts[0]);
-            y2Max = Math.max(y2Max, counts[1]);
-            if (data[i].completion_date === null) {
-              marker = new google.maps.Marker({
-                position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
-                map: map,
-                icon: '/assets/red_MarkerA.png',
-                optimized: true
-              });
-              makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Street Address: " + data[i].street_address, marker);
-              unfilled_markers.push(marker);
-            } else {
-              marker = new google.maps.Marker({
-                position: new google.maps.LatLng(data[i].latitude, data[i].longitude),
-                map: map,
-                icon: '/assets/green_MarkerA.png',
-                optimized: true
-              });
-              makeInfoWindowEvent(map, infowindow, "Reported on: " + data[i].creation_date + "<br>" + "Patched on: " + data[i].completion_date + "<br>" + "Street Address: " + data[i].street_address, marker);
-              filled_markers.push(marker);
-            }
-          }
 
-          mc.addMarkers(unfilled_markers.concat(filled_markers));
-
-          angular.element(document.getElementById('chart')).scope().$apply(function(scope) {
-            scope.dates = dates.map(function(date) {
-              return date.substring(5, 10);
-            });
-            scope.options.axes.y.max = Math.max(yMax, y2Max);
-            scope.options.axes.y2.max = Math.max(yMax, y2Max);
-            scope.data = chartData;
-            $('#avg-report').html("" + unfilled_markers.length / dates.length);
-            $('#avg-patch').html("" + filled_markers.length / dates.length);
-          });
-        }
       },
       dataType: "json"
     });
