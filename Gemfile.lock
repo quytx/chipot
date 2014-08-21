@@ -131,6 +131,7 @@ GEM
     rake (10.3.2)
     rdoc (4.1.1)
       json (~> 1.4)
+    rmagick (2.13.3)
     rspec-core (3.0.4)
       rspec-support (~> 3.0.0)
     rspec-expectations (3.0.4)
@@ -202,6 +203,7 @@ DEPENDENCIES
   pry
   rack-mini-profiler
   rails (= 4.1.4)
+  rmagick (~> 2.13.3)
   rspec-rails
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
