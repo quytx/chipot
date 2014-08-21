@@ -288,8 +288,8 @@ $(function() {
 
   getPotholesByDate = function(startDate, endDate) {
     var dates = getDatesBetween(startDate, endDate);
-    if (dates.length > 30) {
-      alert('We are sorry, data of more than one month would take a while to load. Please limit your search within one month period!');
+    if (dates.length > 31) {
+      alert('We are sorry, data of more than one month would take a while to load. Please limit your search within a one month period!');
       return;
     } 
     filled_markers = [];
@@ -303,7 +303,7 @@ $(function() {
       },
       success: function(data) {
         if (data == null || data.length == 0) {
-          alert("There is no data for this period. Please choose another date");
+          alert("There is no data for this period. Please choose another date.");
         } else {
           clearMarkers();
           resetChart(dates.length);
