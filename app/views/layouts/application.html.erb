@@ -1,33 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Chicago Pot Holes</title>
-
-  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
-  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= stylesheet_link_tag    'gmap', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'gmap', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'raphael-min', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'json2', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'raphael.sketchpad', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'jquery.browser.min', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-  <%= favicon_link_tag 'favicon.ico' %>
-    
-</head>
-<body>
+  <head>
+    <title>Chicago Pot Holes</title>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="http://fgnass.github.io/spin.js/spin.min.js"></script>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag    'gmap', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'gmap', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'raphael-min', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'json2', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'raphael.sketchpad', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'jquery.browser.min', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <%= favicon_link_tag 'favicon.ico' %>
+  </head>
+  <body>
     <div class="draw">
       <%= render 'partials/draw' %>
     </div>
-
     <div class="metro">
-        <%= render 'partials/nav' %>
-        <%= yield %>
-        
+      <%= render 'partials/nav' %>
+      <%= yield %>
     </div>
-    
-</body>
+  </body>
 </html>

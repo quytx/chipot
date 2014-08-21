@@ -13,7 +13,6 @@ class HomepagesController < ApplicationController
     potholes = Hash[params[:all_dates].map do |date|
                       [date, Rails.cache.read(date)]
     end]
-    p potholes
     respond_with potholes
   end
 

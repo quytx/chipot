@@ -213,19 +213,18 @@ $(function() {
   var green = new google.maps.MarkerImage("/assets/sprite.png", new google.maps.Size(16, 16), new google.maps.Point(0, 26));
 
   puttingtheMarkers = function(data, dates) {
-    console.log(data);
     temp = [];
     for (key in data) {
       if (data.hasOwnProperty(key)) {
-        var val = data[key];
-        temp.push(val);
+        if (data[key] !== null) {
+          var val = data[key];
+          temp.push(val);
+        }
       }
     }
-    console.log(temp);
     var merged = [];
     merged = merged.concat.apply(merged, temp);
     data = merged;
-    console.log(data);
 
     if (data === null || data.length === 0) {
       alert("There is no data for this period. Please choose another date");
@@ -281,13 +280,37 @@ $(function() {
     filled_markers = [];
     unfilled_markers = [];
     mc.clearMarkers();
+    var opts = {
+      lines: 13, // The number of lines to draw
+      length: 20, // The length of each line
+      width: 10, // The line thickness
+      radius: 30, // The radius of the inner circle
+      corners: 1, // Corner roundness (0..1)
+      rotate: 0, // The rotation offset
+      direction: 1, // 1: clockwise, -1: counterclockwise
+      color: '#000', // #rgb or #rrggbb or array of colors
+      speed: 1, // Rounds per second
+      trail: 60, // Afterglow percentage
+      shadow: false, // Whether to render a shadow
+      hwaccel: false, // Whether to use hardware acceleration
+      className: 'spinner', // The CSS class to assign to the spinner
+      zIndex: 2e9, // The z-index (defaults to 2000000000)
+      top: '50%', // Top position relative to parent
+      left: '50%' // Left position relative to parent
+    };
+    var target = document.getElementById('main');
+    var spinner = new Spinner(opts);
 
     $.ajax({
       url: "/potholes.json",
       data: {
         all_dates: dates
       },
+      beforeSend: function() {
+        spinner.spin(target);
+      },
       success: function(data) {
+        $(".spinner").remove();
         puttingtheMarkers(data, dates);
       },
       dataType: "json"

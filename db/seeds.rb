@@ -1,33 +1,27 @@
 # This file contains all the record creation needed to seed the database from the data of city of chicago.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 
-
-client = SODA::Client.new({:domain => "data.cityofchicago.org", :app_token => ENV["App_Token"]})
-count = 1
-
-# datey = Date.today-30
-# p datey.to_s
-# d = datey.to_s+"T00:00:00"
-
-
 class Seeder
   def self.seed
-    (DateTime.new(2014,5,1).to_date..(DateTime.yesterday)).each do |d|
-      p d.midnight
+    (DateTime.new(2014,6,1).to_date..(DateTime.yesterday)).each do |d|
+      puts "THIS IS IN THE CREATING RECORD IN ACTIVERECORD"
+      puts d
       response = get_data(d.midnight)
       response.each do |record|
         Pothole.create(to_attrs(record).to_hash)
       end
-      cache_write
     end
+    cache_write
   end
 
 
   protected
 
-  def cache_write
+  def self.cache_write
     temp = Pothole.all.group_by(&:creation_date)
     temp.each do |hole|
+      puts "THIS IS CREATING CACHE"
+      p hole[0]
       Rails.cache.write hole[0], hole[1].map(&:attributes)
     end
   end
