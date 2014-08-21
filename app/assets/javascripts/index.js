@@ -72,9 +72,7 @@ $(function() {
   };
 
   insertData = function(hole, data, dates) {
-    if (hole.completion_date !== null) {
-      completeX = convertToX(hole.completion_date, dates);
-    }
+    completeX = convertToX(hole.completion_date, dates);
     createdX = convertToX(hole.creation_date, dates);
     var numComplete = 0;
     var numCreate = 0;
