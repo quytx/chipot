@@ -206,6 +206,7 @@ $(function() {
     setTimeout(function() {
       photoURL = null;
       infowindow.close();
+      infowindow.setContent("");
     }, 3000);
 
     $.post('/submitReport', form, function(data, textStatus, xhr) {
@@ -371,6 +372,7 @@ $(function() {
       makeReportEvent(map, infowindow, event);
     } else {
       infowindow.close();
+      infowindow.setContent("");
     }
   });
 
