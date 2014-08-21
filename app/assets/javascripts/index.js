@@ -19,21 +19,6 @@ $(function() {
   });
 
   var sketchPad = createSketchpad();
-  $('#start-draw').on('click', function(e) {
-    var size = "size=" + "640x480&";
-    if (map.streetView.pano == null) {
-      alert('Please switch to Street View first!');
-    } else {
-      var pano = "pano=" + map.streetView.location.pano + "&";
-      var heading = "heading=" + map.streetView.pov.heading + "&";
-      var pitch = "pitch=" + map.streetView.pov.pitch;
-      var url = "http://maps.googleapis.com/maps/api/streetview?" + size + pano + heading + pitch;
-      $('#street-view-image').attr("src", url);
-      $('.metro').hide();
-      $('.draw').show();
-    }
-  });
-  var sketchPad = createSketchpad();
   startDrawing(sketchPad);
 
   // Default lat and long for map on load
