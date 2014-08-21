@@ -203,7 +203,8 @@ $(function() {
       thumbURL = JSON.parse(xhr.responseText).thumb.url.url;
       if (photoURL) {
         // File(s) uploaded.
-        uploadButton.val('Included');
+        uploadButton.hide();
+        $('label[for="photo_url"]').html('The photo below will be included:');
         $('#msg').hide();
         $('#new_photo').after( '<img src="' + thumbURL + '">');
       } else {
