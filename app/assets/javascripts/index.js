@@ -287,6 +287,10 @@ $(function() {
 
   getPotholesByDate = function(startDate, endDate) {
     var dates = getDatesBetween(startDate, endDate);
+    if (dates.length > 30) {
+      alert('We are sorry, data of more than one month would take a while to load. Please limit your search within one month period!');
+      return;
+    } 
     filled_markers = [];
     unfilled_markers = [];
     mc.clearMarkers();
