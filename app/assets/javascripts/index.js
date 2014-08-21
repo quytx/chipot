@@ -202,9 +202,12 @@ $(function() {
 
     xhr.onload = function(e) {
       photoURL = JSON.parse(xhr.responseText).url.url.url;
+      thumbURL = JSON.parse(xhr.responseText).thumb.url.url;
       if (photoURL) {
         // File(s) uploaded.
         uploadButton.val('Included');
+        $('#msg').hide();
+        $('#new_photo').after( '<img src="' + thumbURL + '">');
       } else {
         alert('An error occurred!');
       }
@@ -230,22 +233,13 @@ $(function() {
     infowindow.setContent("Your request has been submitted");
     setTimeout(function() {
       photoURL = null;
+      thumbURL = null;
       infowindow.close();
       infowindow.setContent("");
     }, 3000);
 
     $.post('/submitReport', form, function(data, textStatus, xhr) {
-      // if (xhr.status === 200) {
-      //   infowindow.setContent("Your request has been submitted");
-      //   setTimeout(function() {
-      //     infowindow.close();
-      //   }, 3000);
-      // } else {
-      //   infowindow.setContent("Unable to process your request");
-      //   setTimeout(function() {
-      //     infowindow.close();
-      //   }, 4000);
-      // }
+     
     }, 'json');
   });
 
