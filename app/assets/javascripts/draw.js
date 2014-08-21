@@ -67,8 +67,11 @@ startDrawing = function(pad) {
             $('#layer2').show();
             map.streetView.setVisible(false);
             lastInfowindow.open(map);
-            $('#msg').hide();
             photoURL = e.url.url.url;
+            thumbURL = e.thumb.url.url;
+            $('#msg').hide();
+            $('#photo_url').hide();
+            $('#photo_url').after( '<img src="' + thumbURL + '">');
             $('#upload-button').val("Included");
             $('#start-draw').hide(); 
           },
