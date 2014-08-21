@@ -37,7 +37,7 @@ gem 'rmagick', '~> 2.13.3'
 gem 'dalli'
 
 #MiniProfiler that displays speed on the page
-gem 'rack-mini-profiler'
+
 
 #City of Chicago API
 gem 'soda-ruby', require: 'soda/client'
