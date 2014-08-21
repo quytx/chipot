@@ -17,7 +17,7 @@ config/secrets.yml
 ## Environment normalisation:
 /.bundle
 /vendor/bundle
-/public/uploads
+/public/uploads/
 
 # Log
 /log
