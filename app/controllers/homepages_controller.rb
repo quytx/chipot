@@ -1,4 +1,5 @@
 class HomepagesController < ApplicationController
+  include ApplicationHelper
   def index
   end
 
@@ -44,6 +45,25 @@ class HomepagesController < ApplicationController
 
   def uploadToS3
     @photo = Photo.new(photo_params)
+    respond_to do |format|
+      if @photo.save
+        format.html 
+        format.json { render :json => { url: @photo.url.medium } }
+      else
+        format.html 
+        format.json { render :json => { url: 'none'} }
+      end
+    end
+  end
+
+  def processImg
+    
+    draw_img = convertBase64ToImg(params[:imgBase64])
+    bg_img = readImgFromUrl(params[:bgURL])
+    saved_img = File.open(flatten(bg_img, draw_img))
+
+    #push to s3
+    @photo = Photo.new(url: saved_img)
     respond_to do |format|
       if @photo.save
         format.html 

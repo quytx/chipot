@@ -1,4 +1,5 @@
 var lastInfowindow;
+var photoURL;
 $(function() {
 
     $('#start-draw').on('click', function(e) {
@@ -71,8 +72,7 @@ $(function() {
   var map = initialize(mapOptions);
 
   var mc = new MarkerClusterer(map, [], clusterOptions);
-    
-  var photoURL;        
+          
   // Search
   var infowindow = new google.maps.InfoWindow();
   var marker = "";
@@ -116,7 +116,7 @@ $(function() {
                   <input id='photo_url' type='file' name='photo[url]'>\
                   <input id='upload-button' name='commit' type='submit' value='Upload'>\
                 </form>\
-                Dont' have a photo? <button id='get-draw'>Draw markup</button>\
+                <p id='msg'>Don't have a photo? <button id='get-draw'>Draw markup</button></p>\
                 <form id='reportSubmit' enctype='multipart/form-data'>\
                   <input type='hidden' name='latitude' value=" + lat + ">\
                   <input type='hidden' name='longitude' value=" + lng + ">\
@@ -159,7 +159,7 @@ $(function() {
   
   
  
-  var photoURL;
+  
   // ================================ Photo upload ====================================
   $('#map-canvas').on('submit', '#new_photo', function(event) { 
     var photoForm = document.getElementById('new_photo');
@@ -202,6 +202,7 @@ $(function() {
     if (photoURL) {
       form.push({name: "mediaUrl", value: photoURL});
     }
+    
     infowindow.setContent("Your request has been submitted");
     setTimeout(function() {
       infowindow.close();
@@ -363,10 +364,10 @@ $(function() {
   // Open report form when map is clicked if zoomed in far enough
   // If report form is already open, close it on next map click
   google.maps.event.addListener(map, 'click', function(event) {
-    if (map.zoom > 14 && infowindow.getContent()) {
+    if (map.zoom > 15 && infowindow.getContent()) {
       infowindow.close();
       infowindow.setContent("");
-    } else if (map.zoom > 14) {
+    } else if (map.zoom > 15) {
       makeReportEvent(map, infowindow, event);
     } else {
       infowindow.close();

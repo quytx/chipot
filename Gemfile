@@ -31,6 +31,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem "mini_magick"
 gem 'jquery-ui-rails'
 gem 'angularjs-rails'
+gem 'rmagick', '~> 2.13.3'
 
 
 #City of Chicago API
