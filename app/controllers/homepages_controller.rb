@@ -1,23 +1,32 @@
 class HomepagesController < ApplicationController
   include ApplicationHelper
-  def index
-  end
+  respond_to :json
+
+  # def index
+  #   puts "************************ In Index ***************************"
+  #   temp = Pothole.all.group_by(&:creation_date)
+  #   temp.each do |hole|
+  #     Rails.cache.write hole[0], hole[1].to_json
+  #   end
+  # end
 
   def getPotholes
-    @holes = Pothole.where('"potholes"."creation_date" IN (?) OR "potholes"."completion_date" IN (?)', params[:all_dates], params[:all_dates])
-    respond_to do |format|
-      format.html
-      format.json { render :json => @holes }
-    end
+    potholes = Hash[params[:all_dates].map do |date|
+                      [date, Rails.cache.read(date)]
+    end]
+    respond_with potholes
   end
 
 
-  def renderReport
-  end
+  # def getPotholes
+  #   @holes = Pothole.where('"potholes"."creation_date" IN (?) OR "potholes"."completion_date" IN (?)', params[:all_dates], params[:all_dates])
+  #   respond_to do |format|
+  #     format.html
+  #     format.json { render :json => @holes }
+  #   end
+  # end
 
   def submitReport
-
-
     uri = URI.parse('http://test311request.cityofchicago.org/open311/v2/requests.json')
     api_key = ENV["open311_key"]
 
@@ -47,17 +56,17 @@ class HomepagesController < ApplicationController
     @photo = Photo.new(photo_params)
     respond_to do |format|
       if @photo.save
-        format.html 
+        format.html
         format.json { render :json => { url: @photo.url.medium } }
       else
-        format.html 
+        format.html
         format.json { render :json => { url: 'none'} }
       end
     end
   end
 
   def processImg
-    
+
     draw_img = convertBase64ToImg(params[:imgBase64])
     bg_img = readImgFromUrl(params[:bgURL])
     saved_img = File.open(flatten(bg_img, draw_img))
@@ -66,10 +75,10 @@ class HomepagesController < ApplicationController
     @photo = Photo.new(url: saved_img)
     respond_to do |format|
       if @photo.save
-        format.html 
+        format.html
         format.json { render :json => { url: @photo.url.medium } }
       else
-        format.html 
+        format.html
         format.json { render :json => { url: 'none'} }
       end
     end
@@ -78,6 +87,6 @@ class HomepagesController < ApplicationController
   private
 
   def photo_params
-      params.require(:photo).permit(:url)
+    params.require(:photo).permit(:url)
   end
 end
