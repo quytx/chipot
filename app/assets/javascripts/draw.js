@@ -37,30 +37,70 @@ startDrawing = function(pad) {
         pad.pen().color('#FF0000');
     });
 
+    // Server processing
     $('#save-button').on('click', function(e) {
-        // Canvas2Image.saveAsPNG(document.getElementById("myCanvas"));
+        // add loading gif here
+
+        // google image
+        var imgURL = $('#street-view-image').attr("src");
+        // draw canvas
         var e = document.getElementById("editor");
         var newCanvas = document.getElementById('newCanvas');
         canvg(newCanvas, e.firstChild.outerHTML);
 
-        // add background image
-        var imgURL = $('#street-view-image').attr("src");
-        var layer2 = document.getElementById('layer2'), context = layer2.getContext('2d');
-        base_image = new Image();
-        base_image.src = imgURL;
-        console.log(imgURL);
-        base_image.crossOrigin = "Anonymous";
-        base_image.onload = function(){
-            context.drawImage(base_image, 0, 0);
-            context.drawImage(newCanvas, 0, 0);
-        }
+        // convert to img
+        var drawImg = newCanvas.toDataURL();
 
-        $('.metro').show();
-        $('.draw').hide();
-        $('#saveImage').show();
-        $('#layer2').show();
-        map.streetView.setVisible(false);
-        lastInfowindow.open(map);
-        $('#start-draw').hide();   
+        // ajax send to server
+        $.ajax({
+          type: "POST",
+          url: "/imgprocess",
+          data: { 
+             imgBase64: drawImg,
+             bgURL: imgURL
+          },
+          success: function(e) {
+            // download if user wants
+            $('.metro').show();
+            $('.draw').hide();
+            $('#saveImage').show();
+            $('#layer2').show();
+            map.streetView.setVisible(false);
+            lastInfowindow.open(map);
+            $('#msg').hide();
+            photoURL = e.url.url.url;
+            $('#upload-button').val("Included");
+            $('#start-draw').hide(); 
+          },
+          dataType: "json"
+        });
+
     });
+
+    // $('#save-button').on('click', function(e) {
+    //     // Canvas2Image.saveAsPNG(document.getElementById("myCanvas"));
+    //     var e = document.getElementById("editor");
+    //     var newCanvas = document.getElementById('newCanvas');
+    //     canvg(newCanvas, e.firstChild.outerHTML);
+
+    //     // add background image
+    //     var imgURL = $('#street-view-image').attr("src");
+    //     var layer2 = document.getElementById('layer2'), context = layer2.getContext('2d');
+    //     base_image = new Image();
+    //     base_image.src = imgURL;
+    //     console.log(imgURL);
+    //     base_image.crossOrigin = "Anonymous";
+    //     base_image.onload = function(){
+    //         context.drawImage(base_image, 0, 0);
+    //         context.drawImage(newCanvas, 0, 0);
+    //     }
+
+    //     $('.metro').show();
+    //     $('.draw').hide();
+    //     $('#saveImage').show();
+    //     $('#layer2').show();
+    //     map.streetView.setVisible(false);
+    //     lastInfowindow.open(map);
+    //     $('#start-draw').hide();   
+    // });
 }

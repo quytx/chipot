@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   
   post '/upload' => 'homepages#uploadToS3'
 
+  post '/imgprocess' => 'homepages#processImg'
+
   resources :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
