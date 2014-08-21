@@ -116,7 +116,7 @@ $(function() {
                   <input id='photo_url' type='file' name='photo[url]'>\
                   <input id='upload-button' name='commit' type='submit' value='Upload'>\
                 </form>\
-                Dont' have a photo? <button id='get-draw'>Draw markup</button>\
+                Don't have a photo? <button id='get-draw'>Draw markup</button>\
                 <form id='reportSubmit' enctype='multipart/form-data'>\
                   <input type='hidden' name='latitude' value=" + lat + ">\
                   <input type='hidden' name='longitude' value=" + lng + ">\
@@ -363,10 +363,10 @@ $(function() {
   // Open report form when map is clicked if zoomed in far enough
   // If report form is already open, close it on next map click
   google.maps.event.addListener(map, 'click', function(event) {
-    if (map.zoom > 14 && infowindow.getContent()) {
+    if (map.zoom > 15 && infowindow.getContent()) {
       infowindow.close();
       infowindow.setContent("");
-    } else if (map.zoom > 14) {
+    } else if (map.zoom > 15) {
       makeReportEvent(map, infowindow, event);
     } else {
       infowindow.close();
