@@ -57,7 +57,7 @@ class HomepagesController < ApplicationController
     respond_to do |format|
       if @photo.save
         format.html
-        format.json { render :json => { url: @photo.url.medium } }
+        format.json { render :json => { url: @photo.url.medium, thumb: @photo.url.small } }
       else
         format.html
         format.json { render :json => { url: 'none'} }
@@ -76,7 +76,7 @@ class HomepagesController < ApplicationController
     respond_to do |format|
       if @photo.save
         format.html
-        format.json { render :json => { url: @photo.url.medium } }
+        format.json { render :json => { url: @photo.url.medium, thumb: @photo.url.small } }
       else
         format.html
         format.json { render :json => { url: 'none'} }
