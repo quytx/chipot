@@ -72,7 +72,8 @@ startDrawing = function(pad) {
             $('#msg').hide();
             $('#photo_url').hide();
             $('#photo_url').after( '<img src="' + thumbURL + '">');
-            $('#upload-button').val("Included");
+            $('label[for="photo_url"]').html('The photo below will be included:');
+            $('#upload-button').hide();
             $('#start-draw').hide(); 
           },
           dataType: "json"
