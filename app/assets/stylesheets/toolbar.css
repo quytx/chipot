@@ -1,0 +1,11 @@
+#toolbar {
+  margin-top: 47px;
+  background-color: yellow;
+  margin-bottom: 0px;
+}
+
+#date-range, 
+#date-range input,
+#date-range label {
+    display: inline;
+}

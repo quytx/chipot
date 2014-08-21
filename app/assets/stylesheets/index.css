@@ -2,9 +2,21 @@ nav {
     height: 47px;
 }
 #main {
-    margin-bottom: 0px;
-    margin-top: 79px;
+  margin: 0 auto;
+  width: 960px;
+  height: 830px;
+  background-color: green;
 }
+
+#info-section {
+  height: 300px;
+  background-color: grey;
+}
+
+#info-section div {
+  display: inline-block;
+}
+
 body {
     background-color: #F2F2F2;
 }
