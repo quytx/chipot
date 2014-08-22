@@ -345,8 +345,8 @@ $(function() {
         scope.options.axes.y.max = Math.max(yMax, y2Max);
         scope.options.axes.y2.max = Math.max(yMax, y2Max);
         scope.data = chartData;
-        $('#avg-report').html("" + unfilled_markers.length / dates.length);
-        $('#avg-patch').html("" + filled_markers.length / dates.length);
+        $('#avg-report').html("" + (unfilled_markers.length / dates.length).toFixed(0));
+        $('#avg-patch').html("" + (filled_markers.length / dates.length).toFixed(0));
       });
     }
   };

@@ -28,7 +28,7 @@ app.controller('PotHoleChartController', ['$scope',
       },
       series: [{
         y: 'report',
-        color: 'red',
+        color: 'black',
         thickness: '2px',
         label: 'Reported'
       }, {
